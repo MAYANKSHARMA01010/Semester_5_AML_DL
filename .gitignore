@@ -228,6 +228,7 @@ __marimo__/
 
 # Whitelist evaluation metric CSVs and documentation spreadsheets
 !data/GeneratedOutput/**/*.csv
+!Phase_2_Deep_Learning/reports/**/*.csv
 !data/Data Collection Sources/*.xlsx
 
 # Raw source Parquet files (remain local)

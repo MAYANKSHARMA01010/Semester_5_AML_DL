@@ -113,7 +113,24 @@ class ModelEvaluator:
         
         self.num_features = self.feature_cfg['numerical_features']
         self.cat_features = self.feature_cfg['categorical_features']
-        self.all_tree_features = self.num_features + self.cat_features  # 38 features
+        
+        # Load canonical feature ordering from preprocessing metadata
+        meta_p = (
+            self.paths['phase1_dir']
+            / 'data'
+            / 'GeneratedOutput'
+            / '02.Preprocessing&FeatureSelection'
+            / 'preprocessing_metadata.json'
+        )
+        if meta_p.exists():
+            with open(meta_p, 'r', encoding='utf-8') as f:
+                meta = json.load(f)
+            self.all_tree_features = meta.get(
+                'input_features_ordered', self.num_features + self.cat_features
+            )
+        else:
+            self.all_tree_features = self.num_features + self.cat_features
+
         self.target_col = self.feature_cfg['target_variable']
 
         self.rf_model = None
@@ -160,18 +177,18 @@ class ModelEvaluator:
 
     def prepare_inputs(
         self, df: pd.DataFrame
-    ) -> Tuple[np.ndarray, np.ndarray, torch.Tensor, np.ndarray]:
+    ) -> Tuple[pd.DataFrame, np.ndarray, torch.Tensor, np.ndarray]:
         """
         Prepare inputs for tree models, MLP, and extract ground truth targets.
         
         Returns:
-            X_tree: np.ndarray shape (N, 38)
+            X_tree: pd.DataFrame shape (N, 38) with feature names preserved
             X_dl_np: np.ndarray shape (N, 53)
             X_dl_tensor: torch.Tensor shape (N, 53) on self.device
             y_true: np.ndarray shape (N,)
         """
-        # 1. Tree input (38 unscaled numerical + categorical codes)
-        X_tree = df[self.all_tree_features].values.astype(np.float32)
+        # 1. Tree input (38 unscaled numerical + categorical codes as DataFrame)
+        X_tree = df[self.all_tree_features].copy()
 
         # 2. DL input (53 standardized numerical + OHE binary features)
         x_num, x_cat, x_all, y_t = prepare_tensors(
