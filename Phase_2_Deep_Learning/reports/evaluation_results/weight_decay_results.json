@@ -1,0 +1,72 @@
+[
+  {
+    "Config_Name": "MLP_WD_0e+00",
+    "Dropout_Rate": 0.3,
+    "Weight_Decay": 0.0,
+    "Train_Loss": 4108.77890171875,
+    "Train_MAE": 63.2134978125,
+    "Val_Loss": 3767.14010421875,
+    "Val_MAE": 60.83692932128906,
+    "Val_RMSE": 61.37703264836734,
+    "Val_R2": -11.091876029968262,
+    "Generalization_Gap_MAE": -2.3765684912109393,
+    "Generalization_Gap_Loss": -341.6387974999998,
+    "Duration_sec": 0.8419840335845947
+  },
+  {
+    "Config_Name": "MLP_WD_1e-05",
+    "Dropout_Rate": 0.3,
+    "Weight_Decay": 1e-05,
+    "Train_Loss": 4108.77890171875,
+    "Train_MAE": 63.2134978125,
+    "Val_Loss": 3767.14010421875,
+    "Val_MAE": 60.83692932128906,
+    "Val_RMSE": 61.37703264836734,
+    "Val_R2": -11.091876029968262,
+    "Generalization_Gap_MAE": -2.3765684912109393,
+    "Generalization_Gap_Loss": -341.6387974999998,
+    "Duration_sec": 0.9391369819641113
+  },
+  {
+    "Config_Name": "MLP_WD_1e-04",
+    "Dropout_Rate": 0.3,
+    "Weight_Decay": 0.0001,
+    "Train_Loss": 4109.085687890625,
+    "Train_MAE": 63.216468671875,
+    "Val_Loss": 3768.4310575,
+    "Val_MAE": 60.87102127075195,
+    "Val_RMSE": 61.38755082656723,
+    "Val_R2": -11.096020698547363,
+    "Generalization_Gap_MAE": -2.345447401123046,
+    "Generalization_Gap_Loss": -340.65463039062524,
+    "Duration_sec": 1.0114331245422363
+  },
+  {
+    "Config_Name": "MLP_WD_1e-03",
+    "Dropout_Rate": 0.3,
+    "Weight_Decay": 0.001,
+    "Train_Loss": 4109.299581015625,
+    "Train_MAE": 63.217653515625,
+    "Val_Loss": 3770.065396484375,
+    "Val_MAE": 60.84933090209961,
+    "Val_RMSE": 61.400856553853345,
+    "Val_R2": -11.101265907287598,
+    "Generalization_Gap_MAE": -2.368322613525393,
+    "Generalization_Gap_Loss": -339.2341845312503,
+    "Duration_sec": 0.820289134979248
+  },
+  {
+    "Config_Name": "MLP_WD_1e-02",
+    "Dropout_Rate": 0.3,
+    "Weight_Decay": 0.01,
+    "Train_Loss": 4116.66218703125,
+    "Train_MAE": 63.276889375,
+    "Val_Loss": 3779.916430625,
+    "Val_MAE": 60.9449462890625,
+    "Val_RMSE": 61.4810255599746,
+    "Val_R2": -11.132885932922363,
+    "Generalization_Gap_MAE": -2.331943085937503,
+    "Generalization_Gap_Loss": -336.74575640625017,
+    "Duration_sec": 0.9283277988433838
+  }
+]
