@@ -308,7 +308,12 @@ class FeatureAblationEngine:
 
         # 1. Full-feature baseline
         base_preds = self.evaluator.predict_all(eval_df)
-        base_name = 'XGBoost' if model_type == 'xgb' else 'Random Forest'
+        if model_type == 'xgb':
+            base_name = 'XGBoost'
+        elif model_type == 'rf':
+            base_name = 'Random Forest'
+        else:
+            base_name = 'MLP'
         base_m = compute_regression_metrics(base_preds['y_true'], base_preds[base_name])
 
         results = [{
@@ -348,6 +353,31 @@ class FeatureAblationEngine:
 
         df_res = pd.DataFrame(results)
         return df_res.sort_values('Delta_MAE', ascending=False).reset_index(drop=True)
+
+    def run_all_models_ablation(
+        self,
+        val_df: pd.DataFrame,
+        models: Optional[List[str]] = None,
+        n_subsample: Optional[int] = 50000,
+        random_state: int = 42,
+    ) -> pd.DataFrame:
+        """
+        Run Leave-One-Group-Out ablation for multiple models (RF, XGBoost, MLP)
+        and return a unified DataFrame with performance degradation per model.
+        """
+        target_models = models or ['Random Forest', 'XGBoost', 'MLP']
+        all_dfs = []
+        for m_name in target_models:
+            m_type = 'xgb' if 'xgb' in m_name.lower() else ('rf' if 'forest' in m_name.lower() else 'mlp')
+            df_m = self.run_leave_one_group_out(
+                val_df=val_df,
+                model_type=m_type,
+                n_subsample=n_subsample,
+                random_state=random_state,
+            )
+            df_m['Target_Model'] = m_name
+            all_dfs.append(df_m)
+        return pd.concat(all_dfs, ignore_index=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
