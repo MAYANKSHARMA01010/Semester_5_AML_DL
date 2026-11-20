@@ -1,0 +1,602 @@
+[
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "Random Forest",
+    "Sample_Count": 6915,
+    "MAE": 0.01835904141227818,
+    "RMSE": 0.20419896308844715,
+    "R2": 0.9981297182423977,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "XGBoost",
+    "Sample_Count": 6915,
+    "MAE": 0.37849345803260803,
+    "RMSE": 0.9907201294093577,
+    "R2": 0.9559747576713562,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "MLP",
+    "Sample_Count": 6915,
+    "MAE": 1.9694106578826904,
+    "RMSE": 2.3933343431830156,
+    "R2": 0.7430747747421265,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 6915,
+    "MAE": 0.5266914619221761,
+    "RMSE": 0.7488735417826236,
+    "R2": 0.9748454271564864,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 6915,
+    "MAE": 0.5266914619221761,
+    "RMSE": 0.7488735417826236,
+    "R2": 0.9748454271564864,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "Random Forest",
+    "Sample_Count": 4280,
+    "MAE": 0.058593029477060736,
+    "RMSE": 0.23519298990965967,
+    "R2": 0.999676405151712,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "XGBoost",
+    "Sample_Count": 4280,
+    "MAE": 0.17720091342926025,
+    "RMSE": 0.47497546044757083,
+    "R2": 0.9986802339553833,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "MLP",
+    "Sample_Count": 4280,
+    "MAE": 1.369852066040039,
+    "RMSE": 1.6803646408314525,
+    "R2": 0.9834818840026855,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 4280,
+    "MAE": 0.3149348959808331,
+    "RMSE": 0.4359924800227532,
+    "R2": 0.9988879844766048,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 4280,
+    "MAE": 0.3149348959808331,
+    "RMSE": 0.4359924800227532,
+    "R2": 0.9988879844766048,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "Random Forest",
+    "Sample_Count": 442,
+    "MAE": 0.02124808739558169,
+    "RMSE": 0.2611571545790523,
+    "R2": 0.9997573750081272,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "XGBoost",
+    "Sample_Count": 442,
+    "MAE": 0.11316334456205368,
+    "RMSE": 0.45042638578818395,
+    "R2": 0.9992782473564148,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "MLP",
+    "Sample_Count": 442,
+    "MAE": 1.7153382301330566,
+    "RMSE": 2.0251594198134573,
+    "R2": 0.9854101538658142,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 442,
+    "MAE": 0.3813420450584366,
+    "RMSE": 0.5091352442562992,
+    "R2": 0.9990778575799414,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 442,
+    "MAE": 0.3813420450584366,
+    "RMSE": 0.5091352442562992,
+    "R2": 0.9990778575799414,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "Random Forest",
+    "Sample_Count": 1480,
+    "MAE": 0.1456839007023316,
+    "RMSE": 0.3893226127126428,
+    "R2": 0.9994501716492574,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "XGBoost",
+    "Sample_Count": 1480,
+    "MAE": 0.3326301574707031,
+    "RMSE": 0.6747414853299737,
+    "R2": 0.9983484745025635,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "MLP",
+    "Sample_Count": 1480,
+    "MAE": 1.3485705852508545,
+    "RMSE": 1.6865883236559038,
+    "R2": 0.9896813035011292,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 1480,
+    "MAE": 0.33765972856433923,
+    "RMSE": 0.49502896749650127,
+    "R2": 0.9991110668595792,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 1480,
+    "MAE": 0.33765972856433923,
+    "RMSE": 0.49502896749650127,
+    "R2": 0.9991110668595792,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "Random Forest",
+    "Sample_Count": 90540,
+    "MAE": 0.10153046880702311,
+    "RMSE": 0.30698121455570293,
+    "R2": 0.9997416648923685,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "XGBoost",
+    "Sample_Count": 90540,
+    "MAE": 0.2572121024131775,
+    "RMSE": 0.511155524676674,
+    "R2": 0.9992837309837341,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "MLP",
+    "Sample_Count": 90540,
+    "MAE": 1.1341567039489746,
+    "RMSE": 1.4442246750798073,
+    "R2": 0.9942821860313416,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 90540,
+    "MAE": 0.28148421779402966,
+    "RMSE": 0.4170766001758151,
+    "R2": 0.9995231393570684,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 90540,
+    "MAE": 0.28148421779402966,
+    "RMSE": 0.4170766001758151,
+    "R2": 0.9995231393570684,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "Random Forest",
+    "Sample_Count": 7500,
+    "MAE": 0.04288125626742932,
+    "RMSE": 0.16807833711625453,
+    "R2": 0.9998204497828506,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "XGBoost",
+    "Sample_Count": 7500,
+    "MAE": 0.1253749579191208,
+    "RMSE": 0.2936684962081064,
+    "R2": 0.9994518756866455,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "MLP",
+    "Sample_Count": 7500,
+    "MAE": 1.125837802886963,
+    "RMSE": 1.3695124884374086,
+    "R2": 0.9880794882774353,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 7500,
+    "MAE": 0.24664142078220488,
+    "RMSE": 0.3205381324571315,
+    "R2": 0.9993469869599437,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 7500,
+    "MAE": 0.24664142078220488,
+    "RMSE": 0.3205381324571315,
+    "R2": 0.9993469869599437,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "Random Forest",
+    "Sample_Count": 22963,
+    "MAE": 0.010231940803528745,
+    "RMSE": 0.10456549566674735,
+    "R2": 0.9998133596193512,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "XGBoost",
+    "Sample_Count": 22963,
+    "MAE": 0.03978148102760315,
+    "RMSE": 0.21202762918325344,
+    "R2": 0.9992325901985168,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "MLP",
+    "Sample_Count": 22963,
+    "MAE": 1.5127630233764648,
+    "RMSE": 1.7064379047146998,
+    "R2": 0.9502938985824585,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 22963,
+    "MAE": 0.3107045023208196,
+    "RMSE": 0.36486549377737154,
+    "R2": 0.9977275496846332,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 22963,
+    "MAE": 0.3107045023208196,
+    "RMSE": 0.36486549377737154,
+    "R2": 0.9977275496846332,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "Random Forest",
+    "Sample_Count": 3393,
+    "MAE": 0.010100025122785763,
+    "RMSE": 0.021538071624059577,
+    "R2": 0.999971463842208,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "XGBoost",
+    "Sample_Count": 3393,
+    "MAE": 0.0948137417435646,
+    "RMSE": 0.6300924972342371,
+    "R2": 0.9755774736404419,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "MLP",
+    "Sample_Count": 3393,
+    "MAE": 1.7108170986175537,
+    "RMSE": 1.982412013137416,
+    "R2": 0.7582482099533081,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 3393,
+    "MAE": 0.3694766337777161,
+    "RMSE": 0.5108140609629397,
+    "R2": 0.983948798347055,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 3393,
+    "MAE": 0.3694766337777161,
+    "RMSE": 0.5108140609629397,
+    "R2": 0.983948798347055,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "Random Forest",
+    "Sample_Count": 276374,
+    "MAE": 0.03841340392000238,
+    "RMSE": 0.1578618694114127,
+    "R2": 0.9998528811755536,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "XGBoost",
+    "Sample_Count": 276374,
+    "MAE": 0.13232113420963287,
+    "RMSE": 0.3941566275003008,
+    "R2": 0.9990828037261963,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "MLP",
+    "Sample_Count": 276374,
+    "MAE": 1.4442288875579834,
+    "RMSE": 1.7248282029116193,
+    "R2": 0.9824367165565491,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 276374,
+    "MAE": 0.3148544448249359,
+    "RMSE": 0.4078647234996995,
+    "R2": 0.9990179218420828,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 276374,
+    "MAE": 0.3148544448249359,
+    "RMSE": 0.4078647234996995,
+    "R2": 0.9990179218420828,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "Random Forest",
+    "Sample_Count": 4839,
+    "MAE": 0.045767219235992335,
+    "RMSE": 0.1444583199088189,
+    "R2": 0.9999170762556688,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "XGBoost",
+    "Sample_Count": 4839,
+    "MAE": 0.1422017514705658,
+    "RMSE": 0.3554559852068825,
+    "R2": 0.9994979500770569,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "MLP",
+    "Sample_Count": 4839,
+    "MAE": 1.135721206665039,
+    "RMSE": 1.416679868449612,
+    "R2": 0.9920248985290527,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 4839,
+    "MAE": 0.25675378466292115,
+    "RMSE": 0.3436068280736696,
+    "R2": 0.9995308439126982,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 4839,
+    "MAE": 0.25675378466292115,
+    "RMSE": 0.3436068280736696,
+    "R2": 0.9995308439126982,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "Random Forest",
+    "Sample_Count": 3613,
+    "MAE": 0.14441784243360237,
+    "RMSE": 0.339632906841228,
+    "R2": 0.9994150574063341,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "XGBoost",
+    "Sample_Count": 3613,
+    "MAE": 0.42718830704689026,
+    "RMSE": 0.677886440136249,
+    "R2": 0.9976696968078613,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "MLP",
+    "Sample_Count": 3613,
+    "MAE": 1.1130125522613525,
+    "RMSE": 1.380047550073278,
+    "R2": 0.9903421401977539,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 3613,
+    "MAE": 0.2996813101958942,
+    "RMSE": 0.43221504999852367,
+    "R2": 0.9990526870100387,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 3613,
+    "MAE": 0.2996813101958942,
+    "RMSE": 0.43221504999852367,
+    "R2": 0.9990526870100387,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "Random Forest",
+    "Sample_Count": 604,
+    "MAE": 0.007861980739900805,
+    "RMSE": 0.03757834833882961,
+    "R2": 0.9999928342471948,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "XGBoost",
+    "Sample_Count": 604,
+    "MAE": 0.10769274085760117,
+    "RMSE": 0.48095353023590925,
+    "R2": 0.9988262057304382,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "MLP",
+    "Sample_Count": 604,
+    "MAE": 1.7775518894195557,
+    "RMSE": 2.1008433419694956,
+    "R2": 0.9776038527488708,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 604,
+    "MAE": 0.3878823000201112,
+    "RMSE": 0.49693326713725317,
+    "R2": 0.9987469090610002,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 604,
+    "MAE": 0.3878823000201112,
+    "RMSE": 0.49693326713725317,
+    "R2": 0.9987469090610002,
+    "Reliable_Sample": true
+  }
+]

@@ -1,0 +1,352 @@
+[
+  {
+    "Subgroup_Field": "era",
+    "Category": "1990-2005 (Expansion)",
+    "Model": "Random Forest",
+    "Sample_Count": 125512,
+    "MAE": 0.04489565271810894,
+    "RMSE": 0.1940331736194537,
+    "R2": 0.9998780118139393,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "1990-2005 (Expansion)",
+    "Model": "XGBoost",
+    "Sample_Count": 125512,
+    "MAE": 0.15842944383621216,
+    "RMSE": 0.47176102910291984,
+    "R2": 0.9992789030075073,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "1990-2005 (Expansion)",
+    "Model": "MLP",
+    "Sample_Count": 125512,
+    "MAE": 1.4272047281265259,
+    "RMSE": 1.7208261608254478,
+    "R2": 0.9904051423072815,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "1990-2005 (Expansion)",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 125512,
+    "MAE": 0.3212800103491955,
+    "RMSE": 0.43481020998236997,
+    "R2": 0.9993874165405318,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "1990-2005 (Expansion)",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 125512,
+    "MAE": 0.3212800103491955,
+    "RMSE": 0.43481020998236997,
+    "R2": 0.9993874165405318,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Post-2005 (Modern Telemetry)",
+    "Model": "Random Forest",
+    "Sample_Count": 267577,
+    "MAE": 0.05405609173297994,
+    "RMSE": 0.20384840935096005,
+    "R2": 0.999865336960138,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Post-2005 (Modern Telemetry)",
+    "Model": "XGBoost",
+    "Sample_Count": 267577,
+    "MAE": 0.16126613318920135,
+    "RMSE": 0.41724529223246126,
+    "R2": 0.9994358420372009,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Post-2005 (Modern Telemetry)",
+    "Model": "MLP",
+    "Sample_Count": 267577,
+    "MAE": 1.3613983392715454,
+    "RMSE": 1.6519583033825345,
+    "R2": 0.9911563396453857,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Post-2005 (Modern Telemetry)",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 267577,
+    "MAE": 0.3046701883059856,
+    "RMSE": 0.40614694871596846,
+    "R2": 0.9994654354563592,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Post-2005 (Modern Telemetry)",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 267577,
+    "MAE": 0.3046701883059856,
+    "RMSE": 0.40614694871596846,
+    "R2": 0.9994654354563592,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Pre-1990 (Historical)",
+    "Model": "Random Forest",
+    "Sample_Count": 29854,
+    "MAE": 0.055318959712634945,
+    "RMSE": 0.2116996643793159,
+    "R2": 0.9998658206677419,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Pre-1990 (Historical)",
+    "Model": "XGBoost",
+    "Sample_Count": 29854,
+    "MAE": 0.17459361255168915,
+    "RMSE": 0.449436483275667,
+    "R2": 0.9993952512741089,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Pre-1990 (Historical)",
+    "Model": "MLP",
+    "Sample_Count": 29854,
+    "MAE": 1.3477610349655151,
+    "RMSE": 1.6413958237329127,
+    "R2": 0.9919337630271912,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Pre-1990 (Historical)",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 29854,
+    "MAE": 0.30521295578486324,
+    "RMSE": 0.4147394284882548,
+    "R2": 0.9994850133902519,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "era",
+    "Category": "Pre-1990 (Historical)",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 29854,
+    "MAE": 0.30521295578486324,
+    "RMSE": 0.4147394284882548,
+    "R2": 0.9994850133902519,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Autumn",
+    "Model": "Random Forest",
+    "Sample_Count": 111430,
+    "MAE": 0.052794000756900425,
+    "RMSE": 0.21774779247343928,
+    "R2": 0.999845610985243,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Autumn",
+    "Model": "XGBoost",
+    "Sample_Count": 111430,
+    "MAE": 0.16150496900081635,
+    "RMSE": 0.43959907651193336,
+    "R2": 0.9993707537651062,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Autumn",
+    "Model": "MLP",
+    "Sample_Count": 111430,
+    "MAE": 1.2722642421722412,
+    "RMSE": 1.571708552077821,
+    "R2": 0.991956353187561,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Autumn",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 111430,
+    "MAE": 0.28897108177174263,
+    "RMSE": 0.403399750922785,
+    "R2": 0.9994701168303155,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Autumn",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 111430,
+    "MAE": 0.28897108177174263,
+    "RMSE": 0.403399750922785,
+    "R2": 0.9994701168303155,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Spring",
+    "Model": "Random Forest",
+    "Sample_Count": 105471,
+    "MAE": 0.05087556440115542,
+    "RMSE": 0.19620833424156983,
+    "R2": 0.9998783697193784,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Spring",
+    "Model": "XGBoost",
+    "Sample_Count": 105471,
+    "MAE": 0.15742191672325134,
+    "RMSE": 0.4197514210223102,
+    "R2": 0.9994433522224426,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Spring",
+    "Model": "MLP",
+    "Sample_Count": 105471,
+    "MAE": 1.4273502826690674,
+    "RMSE": 1.7070716835662942,
+    "R2": 0.9907931685447693,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Spring",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 105471,
+    "MAE": 0.31828671843722806,
+    "RMSE": 0.41696348573738234,
+    "R2": 0.9994507085278296,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Spring",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 105471,
+    "MAE": 0.31828671843722806,
+    "RMSE": 0.41696348573738234,
+    "R2": 0.9994507085278296,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Summer",
+    "Model": "Random Forest",
+    "Sample_Count": 111528,
+    "MAE": 0.05030806650738505,
+    "RMSE": 0.18538540532743356,
+    "R2": 0.9998902663796572,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Summer",
+    "Model": "XGBoost",
+    "Sample_Count": 111528,
+    "MAE": 0.1640245020389557,
+    "RMSE": 0.44581856331765796,
+    "R2": 0.9993653893470764,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Summer",
+    "Model": "MLP",
+    "Sample_Count": 111528,
+    "MAE": 1.3495999574661255,
+    "RMSE": 1.6073318400608776,
+    "R2": 0.9917510151863098,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Summer",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 111528,
+    "MAE": 0.30367005557739796,
+    "RMSE": 0.40427722996425736,
+    "R2": 0.9994781481965012,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Summer",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 111528,
+    "MAE": 0.30367005557739796,
+    "RMSE": 0.40427722996425736,
+    "R2": 0.9994781481965012,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Winter",
+    "Model": "Random Forest",
+    "Sample_Count": 94514,
+    "MAE": 0.05175013274351472,
+    "RMSE": 0.2058658523647639,
+    "R2": 0.9998630437935871,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Winter",
+    "Model": "XGBoost",
+    "Sample_Count": 94514,
+    "MAE": 0.1624622941017151,
+    "RMSE": 0.43959495798743475,
+    "R2": 0.9993755221366882,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Winter",
+    "Model": "MLP",
+    "Sample_Count": 94514,
+    "MAE": 1.4898911714553833,
+    "RMSE": 1.815621155096241,
+    "R2": 0.9893472194671631,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Winter",
+    "Model": "Weighted Ensemble",
+    "Sample_Count": 94514,
+    "MAE": 0.3313930120061159,
+    "RMSE": 0.44007753474812283,
+    "R2": 0.999374148227543,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "season",
+    "Category": "Winter",
+    "Model": "Hybrid (Weighted)",
+    "Sample_Count": 94514,
+    "MAE": 0.3313930120061159,
+    "RMSE": 0.44007753474812283,
+    "R2": 0.999374148227543,
+    "Reliable_Sample": true
+  }
+]
