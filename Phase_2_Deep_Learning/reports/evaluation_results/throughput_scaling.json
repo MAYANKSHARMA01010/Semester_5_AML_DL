@@ -1,0 +1,38 @@
+[
+  {
+    "Batch_Size": 64,
+    "Duration_sec": 0.5839458750015183,
+    "Throughput_samples_per_sec": 171248.74801066107,
+    "Latency_per_batch_ms": 0.37372536000097173
+  },
+  {
+    "Batch_Size": 256,
+    "Duration_sec": 0.1784101670000382,
+    "Throughput_samples_per_sec": 560506.173395256,
+    "Latency_per_batch_ms": 0.4567300275200978
+  },
+  {
+    "Batch_Size": 1024,
+    "Duration_sec": 0.04461483299928659,
+    "Throughput_samples_per_sec": 2241407.0226733573,
+    "Latency_per_batch_ms": 0.45685588991269466
+  },
+  {
+    "Batch_Size": 4096,
+    "Duration_sec": 0.018036917001154507,
+    "Throughput_samples_per_sec": 5544184.740307848,
+    "Latency_per_batch_ms": 0.7387921203672886
+  },
+  {
+    "Batch_Size": 16384,
+    "Duration_sec": 0.0032597499994153623,
+    "Throughput_samples_per_sec": 30677199.17721759,
+    "Latency_per_batch_ms": 0.534077439904213
+  },
+  {
+    "Batch_Size": 65536,
+    "Duration_sec": 0.008724082999833627,
+    "Throughput_samples_per_sec": 11462522.766221626,
+    "Latency_per_batch_ms": 5.717415034770966
+  }
+]

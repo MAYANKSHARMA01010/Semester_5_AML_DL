@@ -1,0 +1,36 @@
+{
+  "hardware": {
+    "Platform": "macOS-27.2.1-arm64-arm-64bit-Mach-O",
+    "Processor": "arm",
+    "Python_Version": "3.14.7",
+    "PyTorch_Version": "2.15.0",
+    "Compute_Device": "mps",
+    "MPS_Available": true
+  },
+  "benchmarks": [
+    {
+      "Model": "Random Forest",
+      "Single_Sample_Latency_ms": 17.325764580000396,
+      "Batch_Time_sec": 0.0650280420013587,
+      "Throughput_samples_per_sec": 1537798.1086668824,
+      "Training_Time_sec": 32.4,
+      "Throughput_relative_to_RF": 1.0
+    },
+    {
+      "Model": "XGBoost",
+      "Single_Sample_Latency_ms": 0.8432899999934307,
+      "Batch_Time_sec": 0.09424241700071434,
+      "Throughput_samples_per_sec": 1061093.3291242097,
+      "Training_Time_sec": 8.2,
+      "Throughput_relative_to_RF": 0.6900082157365064
+    },
+    {
+      "Model": "MLP",
+      "Single_Sample_Latency_ms": 0.2469024999845715,
+      "Batch_Time_sec": 0.08673408300091978,
+      "Throughput_samples_per_sec": 1152949.2967480794,
+      "Training_Time_sec": 58.6,
+      "Throughput_relative_to_RF": 0.7497403529437108
+    }
+  ]
+}
