@@ -1,11 +1,11 @@
 {
   "N_Samples": 1000,
   "N_MC_Passes": 30,
-  "MC_Mean_MAE": 3.131375551223755,
-  "MC_Mean_RMSE": 3.7003803624715843,
-  "MC_Mean_R2": 0.9546958208084106,
-  "Mean_Epistemic_Uncertainty_Std": 8.164340019226074,
-  "Median_Epistemic_Uncertainty_Std": 8.208961486816406,
-  "Min_Epistemic_Uncertainty_Std": 3.5881755352020264,
-  "Max_Epistemic_Uncertainty_Std": 14.43968677520752
+  "MC_Mean_MAE": 1.8078848123550415,
+  "MC_Mean_RMSE": 2.2994446166838927,
+  "MC_Mean_R2": 0.9825059175491333,
+  "Mean_Epistemic_Uncertainty_Std": 8.366589546203613,
+  "Median_Epistemic_Uncertainty_Std": 8.411005020141602,
+  "Min_Epistemic_Uncertainty_Std": 3.5040323734283447,
+  "Max_Epistemic_Uncertainty_Std": 14.621999740600586
 }

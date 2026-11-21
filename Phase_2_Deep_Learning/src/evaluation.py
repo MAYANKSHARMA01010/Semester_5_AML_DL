@@ -53,6 +53,7 @@ from Phase_2_Deep_Learning.src.hybrid_models import (
     HybridEnsemble,
     WeightedEnsemble,
     ResidualMLPNet,
+    load_hybrid_checkpoint,
 )
 from Phase_2_Deep_Learning.src.training import get_device, compute_regression_metrics
 
@@ -144,14 +145,16 @@ class ModelEvaluator:
         rf_path: Optional[Path] = None,
         xgb_path: Optional[Path] = None,
         mlp_path: Optional[Path] = None,
+        hybrid_path: Optional[Path] = None,
     ) -> None:
-        """Load RF, XGBoost, and MLP from saved checkpoints."""
+        """Load RF, XGBoost, MLP, and Hybrid Ensemble from saved checkpoints."""
         p1_gen = self.paths['phase1_dir'] / 'data' / 'GeneratedOutput' / '03.ModelTraining'
         p2_models = self.paths['phase2_dir'] / 'models'
 
         rf_p = rf_path or (p1_gen / 'random_forest_model.joblib')
         xgb_p = xgb_path or (p1_gen / 'xgboost_model.json')
         mlp_p = mlp_path or (p2_models / 'mlp_best_checkpoint.pt')
+        hyb_p = hybrid_path or (p2_models / 'hybrid_ensemble_checkpoint.pt')
 
         if rf_p.exists():
             self.rf_model = load_tree_model(str(rf_p), model_type='rf')
@@ -171,6 +174,15 @@ class ModelEvaluator:
             print(f"✓ MLP loaded from {mlp_p}")
         else:
             print(f"⚠ MLP checkpoint not found at {mlp_p}")
+
+        if hyb_p.exists():
+            self.hybrid_model, _, _ = load_hybrid_checkpoint(hyb_p, device=self.device)
+            self.hybrid_model.eval()
+            print(f"✓ Hybrid Ensemble loaded from {hyb_p}")
+        else:
+            if hybrid_path is not None:
+                raise FileNotFoundError(f"Hybrid checkpoint not found at {hyb_p}")
+            print(f"⚠ Hybrid Ensemble checkpoint not found at {hyb_p}")
 
         # Instantiate default WeightedEnsemble
         self.weighted_ensemble = WeightedEnsemble(rf_weight=0.4, xgb_weight=0.4, mlp_weight=0.2)
@@ -237,40 +249,46 @@ class ModelEvaluator:
                     mlp_preds.append(out.detach().cpu().numpy().flatten())
             preds['MLP'] = np.concatenate(mlp_preds)
 
-        # 4. Weighted Ensemble (RF + XGBoost + MLP)
+        # 4. Base Tree Ensemble (0.5 RF + 0.5 XGBoost)
+        if ('Random Forest' in preds and 'XGBoost' in preds):
+            preds['Base Tree Ensemble'] = 0.5 * (preds['Random Forest'] + preds['XGBoost'])
+
+        # 5. Weighted Ensemble (RF + XGBoost + MLP: 0.4 RF + 0.4 XGBoost + 0.2 MLP)
         if ('Random Forest' in preds and 'XGBoost' in preds and 'MLP' in preds):
             preds['Weighted Ensemble'] = self.weighted_ensemble.predict(
                 preds['Random Forest'], preds['XGBoost'], preds['MLP']
             )
 
-        # 5. Hybrid Model (Tree Base + Residual Correction)
-        if ('Random Forest' in preds and 'XGBoost' in preds):
-            base_tree = 0.5 * (preds['Random Forest'] + preds['XGBoost'])
-            if self.hybrid_model is not None:
-                preds['Hybrid'] = self.hybrid_model.predict_numpy(
-                    X_dl_np, base_tree, device=self.device
-                )
-            else:
-                # If separate ResidualMLP is not trained, WeightedEnsemble serves as primary ensemble
-                preds['Hybrid (Weighted)'] = preds.get('Weighted Ensemble', base_tree)
+        # 6. Residual Hybrid (Tree Base + Residual MLP Correction)
+        if ('Base Tree Ensemble' in preds and self.hybrid_model is not None):
+            preds['Residual Hybrid'] = self.hybrid_model.predict_numpy(
+                X_dl_np, preds['Base Tree Ensemble'], device=self.device
+            )
 
         return preds
 
     def evaluate_predictions(
         self, preds_dict: Dict[str, np.ndarray]
     ) -> pd.DataFrame:
-        """Calculate MAE, RMSE, and R² for each model in predictions dictionary."""
+        """Calculate regression metrics for each model in predictions dictionary."""
         y_true = preds_dict['y_true']
         rows = []
         for model_name, y_pred in preds_dict.items():
             if model_name == 'y_true':
                 continue
             m = compute_regression_metrics(y_true, y_pred)
+            med_ae = float(np.median(np.abs(y_true - y_pred)))
+            max_ae = float(np.max(np.abs(y_true - y_pred)))
+            var_y = float(np.var(y_true))
+            evs = float(1.0 - np.var(y_true - y_pred) / var_y) if var_y > 1e-12 else 0.0
             rows.append({
                 'Model': model_name,
                 'MAE': m['mae'],
                 'RMSE': m['rmse'],
                 'R2': m['r2'],
+                'MedAE': med_ae,
+                'MaxAE': max_ae,
+                'ExplainedVariance': evs,
                 'Samples': len(y_true),
             })
         return pd.DataFrame(rows).sort_values('MAE').reset_index(drop=True)
@@ -515,6 +533,31 @@ class ComputationalProfiler:
 
             results.append({
                 'Model': 'MLP',
+                'Single_Sample_Latency_ms': single_lat_ms,
+                'Batch_Time_sec': batch_time,
+                'Throughput_samples_per_sec': throughput,
+            })
+
+        # 4. Residual Hybrid
+        if evaluator.hybrid_model is not None and evaluator.rf_model is not None and evaluator.xgb_model is not None:
+            evaluator.hybrid_model.eval()
+            b_10 = 0.5 * (evaluator.rf_model.predict(X_tree[:10]) + evaluator.xgb_model.predict(X_tree[:10]))
+            evaluator.hybrid_model.predict_numpy(X_dl_np[:10], b_10, device=evaluator.device)
+
+            t0 = time.perf_counter()
+            for _ in range(n_repeats):
+                b1 = 0.5 * (evaluator.rf_model.predict(X_tree[0:1]) + evaluator.xgb_model.predict(X_tree[0:1]))
+                _ = evaluator.hybrid_model.predict_numpy(X_dl_np[0:1], b1, device=evaluator.device)
+            single_lat_ms = ((time.perf_counter() - t0) / n_repeats) * 1000.0
+
+            t0 = time.perf_counter()
+            b_all = 0.5 * (evaluator.rf_model.predict(X_tree) + evaluator.xgb_model.predict(X_tree))
+            _ = evaluator.hybrid_model.predict_numpy(X_dl_np, b_all, device=evaluator.device)
+            batch_time = time.perf_counter() - t0
+            throughput = n_samples / max(batch_time, 1e-6)
+
+            results.append({
+                'Model': 'Residual Hybrid',
                 'Single_Sample_Latency_ms': single_lat_ms,
                 'Batch_Time_sec': batch_time,
                 'Throughput_samples_per_sec': throughput,

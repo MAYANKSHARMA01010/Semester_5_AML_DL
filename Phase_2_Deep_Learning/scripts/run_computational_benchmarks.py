@@ -77,6 +77,9 @@ def run_computational_benchmarks(sample_size: int = 100000) -> None:
         'Random Forest': 32.40,
         'XGBoost': 8.20,
         'MLP': 58.60,
+        'Base Tree Ensemble': 0.01,
+        'Weighted Ensemble': 0.05,
+        'Residual Hybrid': 59.80,
     }
     bench_df['Training_Time_sec'] = bench_df['Model'].map(training_times)
     bench_df['Throughput_relative_to_RF'] = bench_df['Throughput_samples_per_sec'] / bench_df.loc[bench_df['Model'] == 'Random Forest', 'Throughput_samples_per_sec'].values[0]

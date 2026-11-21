@@ -42,8 +42,9 @@ PALETTE = {
     'Random Forest': '#2b5c8f',
     'XGBoost': '#d95f02',
     'MLP': '#7570b3',
+    'Base Tree Ensemble': '#41b6c4',
     'Weighted Ensemble': '#1b9e77',
-    'Hybrid (Weighted)': '#1b9e77',
+    'Residual Hybrid': '#008080',
 }
 
 def generate_all_figures() -> None:
@@ -163,7 +164,7 @@ def generate_all_figures() -> None:
     country_csv = RESULTS_DIR / 'country_subgroup_metrics.csv'
     if country_csv.exists():
         df_c = pd.read_csv(country_csv)
-        df_c = df_c[df_c['Model'].isin(['Random Forest', 'XGBoost', 'MLP', 'Weighted Ensemble'])]
+        df_c = df_c[df_c['Model'].isin(['Random Forest', 'Residual Hybrid', 'XGBoost', 'MLP'])]
 
         fig, ax = plt.subplots(figsize=(12, 5.5), dpi=300)
         sns.barplot(data=df_c, x='Category', y='MAE', hue='Model', palette=PALETTE, ax=ax)

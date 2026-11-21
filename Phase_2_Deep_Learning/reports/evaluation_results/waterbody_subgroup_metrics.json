@@ -4,8 +4,8 @@
     "Category": "Bay",
     "Model": "Random Forest",
     "Sample_Count": 6915,
-    "MAE": 0.01835904141227818,
-    "RMSE": 0.20419896308844715,
+    "MAE": 0.018359041412278107,
+    "RMSE": 0.20419896308844712,
     "R2": 0.9981297182423977,
     "Reliable_Sample": true
   },
@@ -24,9 +24,19 @@
     "Category": "Bay",
     "Model": "MLP",
     "Sample_Count": 6915,
-    "MAE": 1.9694106578826904,
-    "RMSE": 2.3933343431830156,
-    "R2": 0.7430747747421265,
+    "MAE": 1.9694104194641113,
+    "RMSE": 2.39333414394751,
+    "R2": 0.7430748343467712,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Bay",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 6915,
+    "MAE": 0.19541158334040704,
+    "RMSE": 0.5117668194707842,
+    "R2": 0.9882525332970619,
     "Reliable_Sample": true
   },
   {
@@ -34,19 +44,19 @@
     "Category": "Bay",
     "Model": "Weighted Ensemble",
     "Sample_Count": 6915,
-    "MAE": 0.5266914619221761,
-    "RMSE": 0.7488735417826236,
-    "R2": 0.9748454271564864,
+    "MAE": 0.5266914324637764,
+    "RMSE": 0.7488735203888036,
+    "R2": 0.974845428593718,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Bay",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 6915,
-    "MAE": 0.5266914619221761,
-    "RMSE": 0.7488735417826236,
-    "R2": 0.9748454271564864,
+    "MAE": 0.058375779539346695,
+    "RMSE": 0.14977391236468587,
+    "R2": 0.9989938139915466,
     "Reliable_Sample": true
   },
   {
@@ -54,8 +64,8 @@
     "Category": "Canal",
     "Model": "Random Forest",
     "Sample_Count": 4280,
-    "MAE": 0.058593029477060736,
-    "RMSE": 0.23519298990965967,
+    "MAE": 0.058593029477062616,
+    "RMSE": 0.23519298990965973,
     "R2": 0.999676405151712,
     "Reliable_Sample": true
   },
@@ -74,9 +84,19 @@
     "Category": "Canal",
     "Model": "MLP",
     "Sample_Count": 4280,
-    "MAE": 1.369852066040039,
-    "RMSE": 1.6803646408314525,
+    "MAE": 1.3698519468307495,
+    "RMSE": 1.6803644989464215,
     "R2": 0.9834818840026855,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Canal",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 4280,
+    "MAE": 0.10047688699780885,
+    "RMSE": 0.2657363731266893,
+    "R2": 0.9995869003193918,
     "Reliable_Sample": true
   },
   {
@@ -84,19 +104,19 @@
     "Category": "Canal",
     "Model": "Weighted Ensemble",
     "Sample_Count": 4280,
-    "MAE": 0.3149348959808331,
-    "RMSE": 0.4359924800227532,
-    "R2": 0.9988879844766048,
+    "MAE": 0.3149348654989066,
+    "RMSE": 0.435992467850215,
+    "R2": 0.9988879845386978,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Canal",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 4280,
-    "MAE": 0.3149348959808331,
-    "RMSE": 0.4359924800227532,
-    "R2": 0.9988879844766048,
+    "MAE": 0.08277858048677444,
+    "RMSE": 0.19731349175475515,
+    "R2": 0.9997722506523132,
     "Reliable_Sample": true
   },
   {
@@ -104,8 +124,8 @@
     "Category": "Coastal",
     "Model": "Random Forest",
     "Sample_Count": 442,
-    "MAE": 0.02124808739558169,
-    "RMSE": 0.2611571545790523,
+    "MAE": 0.021248087395581785,
+    "RMSE": 0.2611571545790544,
     "R2": 0.9997573750081272,
     "Reliable_Sample": true
   },
@@ -124,9 +144,19 @@
     "Category": "Coastal",
     "Model": "MLP",
     "Sample_Count": 442,
-    "MAE": 1.7153382301330566,
-    "RMSE": 2.0251594198134573,
+    "MAE": 1.7153376340866089,
+    "RMSE": 2.025158948900196,
     "R2": 0.9854101538658142,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Coastal",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 442,
+    "MAE": 0.06452824044734604,
+    "RMSE": 0.27242687267633714,
+    "R2": 0.9997359831972282,
     "Reliable_Sample": true
   },
   {
@@ -134,19 +164,19 @@
     "Category": "Coastal",
     "Model": "Weighted Ensemble",
     "Sample_Count": 442,
-    "MAE": 0.3813420450584366,
-    "RMSE": 0.5091352442562992,
-    "R2": 0.9990778575799414,
+    "MAE": 0.38134191905259934,
+    "RMSE": 0.5091351713339707,
+    "R2": 0.9990778578440942,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Coastal",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 442,
-    "MAE": 0.3813420450584366,
-    "RMSE": 0.5091352442562992,
-    "R2": 0.9990778575799414,
+    "MAE": 0.03482380136847496,
+    "RMSE": 0.09853413810997912,
+    "R2": 0.999965488910675,
     "Reliable_Sample": true
   },
   {
@@ -154,8 +184,8 @@
     "Category": "Drainage",
     "Model": "Random Forest",
     "Sample_Count": 1480,
-    "MAE": 0.1456839007023316,
-    "RMSE": 0.3893226127126428,
+    "MAE": 0.14568390070233228,
+    "RMSE": 0.38932261271264307,
     "R2": 0.9994501716492574,
     "Reliable_Sample": true
   },
@@ -174,7 +204,7 @@
     "Category": "Drainage",
     "Model": "MLP",
     "Sample_Count": 1480,
-    "MAE": 1.3485705852508545,
+    "MAE": 1.348570466041565,
     "RMSE": 1.6865883236559038,
     "R2": 0.9896813035011292,
     "Reliable_Sample": true
@@ -182,21 +212,31 @@
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Drainage",
-    "Model": "Weighted Ensemble",
+    "Model": "Base Tree Ensemble",
     "Sample_Count": 1480,
-    "MAE": 0.33765972856433923,
-    "RMSE": 0.49502896749650127,
-    "R2": 0.9991110668595792,
+    "MAE": 0.19791755847561573,
+    "RMSE": 0.39983794131598216,
+    "R2": 0.9994200695981297,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Drainage",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Weighted Ensemble",
     "Sample_Count": 1480,
-    "MAE": 0.33765972856433923,
-    "RMSE": 0.49502896749650127,
-    "R2": 0.9991110668595792,
+    "MAE": 0.33765973114183795,
+    "RMSE": 0.4950289593739941,
+    "R2": 0.9991110668887506,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Drainage",
+    "Model": "Residual Hybrid",
+    "Sample_Count": 1480,
+    "MAE": 0.1486864686012268,
+    "RMSE": 0.2838789538255536,
+    "R2": 0.9997076988220215,
     "Reliable_Sample": true
   },
   {
@@ -204,7 +244,7 @@
     "Category": "Effluent",
     "Model": "Random Forest",
     "Sample_Count": 90540,
-    "MAE": 0.10153046880702311,
+    "MAE": 0.10153046880702456,
     "RMSE": 0.30698121455570293,
     "R2": 0.9997416648923685,
     "Reliable_Sample": true
@@ -224,9 +264,19 @@
     "Category": "Effluent",
     "Model": "MLP",
     "Sample_Count": 90540,
-    "MAE": 1.1341567039489746,
-    "RMSE": 1.4442246750798073,
+    "MAE": 1.1341564655303955,
+    "RMSE": 1.4442245925377382,
     "R2": 0.9942821860313416,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Effluent",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 90540,
+    "MAE": 0.1478245910701565,
+    "RMSE": 0.3086817883891076,
+    "R2": 0.9997387947834433,
     "Reliable_Sample": true
   },
   {
@@ -234,19 +284,19 @@
     "Category": "Effluent",
     "Model": "Weighted Ensemble",
     "Sample_Count": 90540,
-    "MAE": 0.28148421779402966,
-    "RMSE": 0.4170766001758151,
-    "R2": 0.9995231393570684,
+    "MAE": 0.2814842035700211,
+    "RMSE": 0.41707659013877724,
+    "R2": 0.9995231393800199,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Effluent",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 90540,
-    "MAE": 0.28148421779402966,
-    "RMSE": 0.4170766001758151,
-    "R2": 0.9995231393570684,
+    "MAE": 0.12416306138038635,
+    "RMSE": 0.24244191281471567,
+    "R2": 0.9998388886451721,
     "Reliable_Sample": true
   },
   {
@@ -254,8 +304,8 @@
     "Category": "Estuarine",
     "Model": "Random Forest",
     "Sample_Count": 7500,
-    "MAE": 0.04288125626742932,
-    "RMSE": 0.16807833711625453,
+    "MAE": 0.04288125626743284,
+    "RMSE": 0.1680783371162546,
     "R2": 0.9998204497828506,
     "Reliable_Sample": true
   },
@@ -274,9 +324,19 @@
     "Category": "Estuarine",
     "Model": "MLP",
     "Sample_Count": 7500,
-    "MAE": 1.125837802886963,
-    "RMSE": 1.3695124884374086,
+    "MAE": 1.1258374452590942,
+    "RMSE": 1.3695123143472878,
     "R2": 0.9880794882774353,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Estuarine",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 7500,
+    "MAE": 0.0708841326698358,
+    "RMSE": 0.17557602095033822,
+    "R2": 0.9998040736471671,
     "Reliable_Sample": true
   },
   {
@@ -284,19 +344,19 @@
     "Category": "Estuarine",
     "Model": "Weighted Ensemble",
     "Sample_Count": 7500,
-    "MAE": 0.24664142078220488,
-    "RMSE": 0.3205381324571315,
-    "R2": 0.9993469869599437,
+    "MAE": 0.24664137612481626,
+    "RMSE": 0.3205381016232828,
+    "R2": 0.9993469870855756,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Estuarine",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 7500,
-    "MAE": 0.24664142078220488,
-    "RMSE": 0.3205381324571315,
-    "R2": 0.9993469869599437,
+    "MAE": 0.06193512678146362,
+    "RMSE": 0.13744715384916958,
+    "R2": 0.9998799562454224,
     "Reliable_Sample": true
   },
   {
@@ -304,7 +364,7 @@
     "Category": "Lake",
     "Model": "Random Forest",
     "Sample_Count": 22963,
-    "MAE": 0.010231940803528745,
+    "MAE": 0.010231940803529528,
     "RMSE": 0.10456549566674735,
     "R2": 0.9998133596193512,
     "Reliable_Sample": true
@@ -324,9 +384,19 @@
     "Category": "Lake",
     "Model": "MLP",
     "Sample_Count": 22963,
-    "MAE": 1.5127630233764648,
-    "RMSE": 1.7064379047146998,
+    "MAE": 1.5127625465393066,
+    "RMSE": 1.7064374855633067,
     "R2": 0.9502938985824585,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Lake",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 22963,
+    "MAE": 0.022169217037784374,
+    "RMSE": 0.12266735653527971,
+    "R2": 0.9997431457102177,
     "Reliable_Sample": true
   },
   {
@@ -334,19 +404,19 @@
     "Category": "Lake",
     "Model": "Weighted Ensemble",
     "Sample_Count": 22963,
-    "MAE": 0.3107045023208196,
-    "RMSE": 0.36486549377737154,
-    "R2": 0.9977275496846332,
+    "MAE": 0.3107044179632328,
+    "RMSE": 0.36486541596264144,
+    "R2": 0.9977275506539224,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Lake",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 22963,
-    "MAE": 0.3107045023208196,
-    "RMSE": 0.36486549377737154,
-    "R2": 0.9977275496846332,
+    "MAE": 0.017563747242093086,
+    "RMSE": 0.09006864967700606,
+    "R2": 0.9998615384101868,
     "Reliable_Sample": true
   },
   {
@@ -354,8 +424,8 @@
     "Category": "Marine",
     "Model": "Random Forest",
     "Sample_Count": 3393,
-    "MAE": 0.010100025122785763,
-    "RMSE": 0.021538071624059577,
+    "MAE": 0.0101000251227859,
+    "RMSE": 0.021538071624059615,
     "R2": 0.999971463842208,
     "Reliable_Sample": true
   },
@@ -374,9 +444,19 @@
     "Category": "Marine",
     "Model": "MLP",
     "Sample_Count": 3393,
-    "MAE": 1.7108170986175537,
-    "RMSE": 1.982412013137416,
-    "R2": 0.7582482099533081,
+    "MAE": 1.710816740989685,
+    "RMSE": 1.9824115922031653,
+    "R2": 0.7582483291625977,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Marine",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 3393,
+    "MAE": 0.0484137011069392,
+    "RMSE": 0.31317979425746556,
+    "R2": 0.9939664997785984,
     "Reliable_Sample": true
   },
   {
@@ -384,19 +464,19 @@
     "Category": "Marine",
     "Model": "Weighted Ensemble",
     "Sample_Count": 3393,
-    "MAE": 0.3694766337777161,
-    "RMSE": 0.5108140609629397,
-    "R2": 0.983948798347055,
+    "MAE": 0.36947658206062994,
+    "RMSE": 0.5108139991973277,
+    "R2": 0.9839488022287501,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Marine",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 3393,
-    "MAE": 0.3694766337777161,
-    "RMSE": 0.5108140609629397,
-    "R2": 0.983948798347055,
+    "MAE": 0.018375752493739128,
+    "RMSE": 0.034953621213325486,
+    "R2": 0.9999248385429382,
     "Reliable_Sample": true
   },
   {
@@ -404,8 +484,8 @@
     "Category": "River",
     "Model": "Random Forest",
     "Sample_Count": 276374,
-    "MAE": 0.03841340392000238,
-    "RMSE": 0.1578618694114127,
+    "MAE": 0.03841340392000297,
+    "RMSE": 0.15786186941141275,
     "R2": 0.9998528811755536,
     "Reliable_Sample": true
   },
@@ -424,9 +504,19 @@
     "Category": "River",
     "Model": "MLP",
     "Sample_Count": 276374,
-    "MAE": 1.4442288875579834,
-    "RMSE": 1.7248282029116193,
+    "MAE": 1.4442286491394043,
+    "RMSE": 1.7248279264567261,
     "R2": 0.9824367165565491,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "River",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 276374,
+    "MAE": 0.07279759812163067,
+    "RMSE": 0.2169621505600916,
+    "R2": 0.9997221043701866,
     "Reliable_Sample": true
   },
   {
@@ -434,19 +524,19 @@
     "Category": "River",
     "Model": "Weighted Ensemble",
     "Sample_Count": 276374,
-    "MAE": 0.3148544448249359,
-    "RMSE": 0.4078647234996995,
-    "R2": 0.9990179218420828,
+    "MAE": 0.31485439400352977,
+    "RMSE": 0.4078646812044727,
+    "R2": 0.9990179220457641,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "River",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 276374,
-    "MAE": 0.3148544448249359,
-    "RMSE": 0.4078647234996995,
-    "R2": 0.9990179218420828,
+    "MAE": 0.057445354759693146,
+    "RMSE": 0.14010210972260395,
+    "R2": 0.9998841285705566,
     "Reliable_Sample": true
   },
   {
@@ -454,8 +544,8 @@
     "Category": "Sea Water",
     "Model": "Random Forest",
     "Sample_Count": 4839,
-    "MAE": 0.045767219235992335,
-    "RMSE": 0.1444583199088189,
+    "MAE": 0.045767219235995894,
+    "RMSE": 0.14445831990881902,
     "R2": 0.9999170762556688,
     "Reliable_Sample": true
   },
@@ -474,9 +564,19 @@
     "Category": "Sea Water",
     "Model": "MLP",
     "Sample_Count": 4839,
-    "MAE": 1.135721206665039,
-    "RMSE": 1.416679868449612,
+    "MAE": 1.13572096824646,
+    "RMSE": 1.4166797001557028,
     "R2": 0.9920248985290527,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sea Water",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 4839,
+    "MAE": 0.07767196085680897,
+    "RMSE": 0.18901372978248643,
+    "R2": 0.9998580352608065,
     "Reliable_Sample": true
   },
   {
@@ -484,19 +584,19 @@
     "Category": "Sea Water",
     "Model": "Weighted Ensemble",
     "Sample_Count": 4839,
-    "MAE": 0.25675378466292115,
-    "RMSE": 0.3436068280736696,
-    "R2": 0.9995308439126982,
+    "MAE": 0.2567537537606422,
+    "RMSE": 0.3436068021644482,
+    "R2": 0.9995308439834504,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Sea Water",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 4839,
-    "MAE": 0.25675378466292115,
-    "RMSE": 0.3436068280736696,
-    "R2": 0.9995308439126982,
+    "MAE": 0.06418126076459885,
+    "RMSE": 0.14409941520962727,
+    "R2": 0.9999175071716309,
     "Reliable_Sample": true
   },
   {
@@ -504,8 +604,8 @@
     "Category": "Sewage",
     "Model": "Random Forest",
     "Sample_Count": 3613,
-    "MAE": 0.14441784243360237,
-    "RMSE": 0.339632906841228,
+    "MAE": 0.14441784243360256,
+    "RMSE": 0.33963290684122815,
     "R2": 0.9994150574063341,
     "Reliable_Sample": true
   },
@@ -524,9 +624,19 @@
     "Category": "Sewage",
     "Model": "MLP",
     "Sample_Count": 3613,
-    "MAE": 1.1130125522613525,
-    "RMSE": 1.380047550073278,
+    "MAE": 1.1130123138427734,
+    "RMSE": 1.3800473773121336,
     "R2": 0.9903421401977539,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Sewage",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 3613,
+    "MAE": 0.23733595920287437,
+    "RMSE": 0.38542206159405945,
+    "R2": 0.999246701916858,
     "Reliable_Sample": true
   },
   {
@@ -534,19 +644,19 @@
     "Category": "Sewage",
     "Model": "Weighted Ensemble",
     "Sample_Count": 3613,
-    "MAE": 0.2996813101958942,
-    "RMSE": 0.43221504999852367,
-    "R2": 0.9990526870100387,
+    "MAE": 0.29968130132696075,
+    "RMSE": 0.432215044331083,
+    "R2": 0.999052687034882,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Sewage",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 3613,
-    "MAE": 0.2996813101958942,
-    "RMSE": 0.43221504999852367,
-    "R2": 0.9990526870100387,
+    "MAE": 0.18170535564422607,
+    "RMSE": 0.27474332719514893,
+    "R2": 0.9996172189712524,
     "Reliable_Sample": true
   },
   {
@@ -554,8 +664,8 @@
     "Category": "Transitional",
     "Model": "Random Forest",
     "Sample_Count": 604,
-    "MAE": 0.007861980739900805,
-    "RMSE": 0.03757834833882961,
+    "MAE": 0.00786198073990104,
+    "RMSE": 0.037578348338830406,
     "R2": 0.9999928342471948,
     "Reliable_Sample": true
   },
@@ -574,9 +684,19 @@
     "Category": "Transitional",
     "Model": "MLP",
     "Sample_Count": 604,
-    "MAE": 1.7775518894195557,
-    "RMSE": 2.1008433419694956,
+    "MAE": 1.777551293373108,
+    "RMSE": 2.1008427745340126,
     "R2": 0.9776038527488708,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "waterbody_type",
+    "Category": "Transitional",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 604,
+    "MAE": 0.055156076287991455,
+    "RMSE": 0.24036352503427721,
+    "R2": 0.9997068272669728,
     "Reliable_Sample": true
   },
   {
@@ -584,19 +704,19 @@
     "Category": "Transitional",
     "Model": "Weighted Ensemble",
     "Sample_Count": 604,
-    "MAE": 0.3878823000201112,
-    "RMSE": 0.49693326713725317,
-    "R2": 0.9987469090610002,
+    "MAE": 0.3878821812845011,
+    "RMSE": 0.49693315003238075,
+    "R2": 0.9987469096515947,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "waterbody_type",
     "Category": "Transitional",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 604,
-    "MAE": 0.3878823000201112,
-    "RMSE": 0.49693326713725317,
-    "R2": 0.9987469090610002,
+    "MAE": 0.03018919751048088,
+    "RMSE": 0.11866069889870665,
+    "R2": 0.9999285340309143,
     "Reliable_Sample": true
   }
 ]

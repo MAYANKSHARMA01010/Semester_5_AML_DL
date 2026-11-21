@@ -4,8 +4,8 @@
     "Category": "Canada",
     "Model": "Random Forest",
     "Sample_Count": 597,
-    "MAE": 0.12462189786478432,
-    "RMSE": 0.6404967689394481,
+    "MAE": 0.12462189786478449,
+    "RMSE": 0.6404967689394471,
     "R2": 0.9972181655932338,
     "Reliable_Sample": true
   },
@@ -25,8 +25,18 @@
     "Model": "MLP",
     "Sample_Count": 597,
     "MAE": 1.9612613916397095,
-    "RMSE": 2.4874816280434144,
+    "RMSE": 2.4874819155855166,
     "R2": 0.958041787147522,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "country",
+    "Category": "Canada",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 597,
+    "MAE": 0.2115748744363217,
+    "RMSE": 0.6403611736034488,
+    "R2": 0.9972193433160943,
     "Reliable_Sample": true
   },
   {
@@ -34,19 +44,19 @@
     "Category": "Canada",
     "Model": "Weighted Ensemble",
     "Sample_Count": 597,
-    "MAE": 0.4995069081809722,
-    "RMSE": 0.8112528583135629,
-    "R2": 0.9955371748915398,
+    "MAE": 0.4995069273503052,
+    "RMSE": 0.8112528967951786,
+    "R2": 0.9955371744681534,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "country",
     "Category": "Canada",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 597,
-    "MAE": 0.4995069081809722,
-    "RMSE": 0.8112528583135629,
-    "R2": 0.9955371748915398,
+    "MAE": 0.14310768246650696,
+    "RMSE": 0.395720417665367,
+    "R2": 0.9989381432533264,
     "Reliable_Sample": true
   },
   {
@@ -54,8 +64,8 @@
     "Category": "China",
     "Model": "Random Forest",
     "Sample_Count": 6915,
-    "MAE": 0.01835904141227818,
-    "RMSE": 0.20419896308844715,
+    "MAE": 0.018359041412278107,
+    "RMSE": 0.20419896308844712,
     "R2": 0.9981297182423977,
     "Reliable_Sample": true
   },
@@ -74,9 +84,19 @@
     "Category": "China",
     "Model": "MLP",
     "Sample_Count": 6915,
-    "MAE": 1.9694106578826904,
-    "RMSE": 2.3933343431830156,
-    "R2": 0.7430747747421265,
+    "MAE": 1.9694104194641113,
+    "RMSE": 2.39333414394751,
+    "R2": 0.7430748343467712,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "country",
+    "Category": "China",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 6915,
+    "MAE": 0.19541158334040704,
+    "RMSE": 0.5117668194707842,
+    "R2": 0.9882525332970619,
     "Reliable_Sample": true
   },
   {
@@ -84,19 +104,19 @@
     "Category": "China",
     "Model": "Weighted Ensemble",
     "Sample_Count": 6915,
-    "MAE": 0.5266914619221761,
-    "RMSE": 0.7488735417826236,
-    "R2": 0.9748454271564864,
+    "MAE": 0.5266914324637764,
+    "RMSE": 0.7488735203888036,
+    "R2": 0.974845428593718,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "country",
     "Category": "China",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 6915,
-    "MAE": 0.5266914619221761,
-    "RMSE": 0.7488735417826236,
-    "R2": 0.9748454271564864,
+    "MAE": 0.058375779539346695,
+    "RMSE": 0.14977391236468587,
+    "R2": 0.9989938139915466,
     "Reliable_Sample": true
   },
   {
@@ -104,8 +124,8 @@
     "Category": "England",
     "Model": "Random Forest",
     "Sample_Count": 319239,
-    "MAE": 0.06511862642059024,
-    "RMSE": 0.22240106788584849,
+    "MAE": 0.06511862642059135,
+    "RMSE": 0.22240106788584854,
     "R2": 0.9998494300229713,
     "Reliable_Sample": true
   },
@@ -124,9 +144,19 @@
     "Category": "England",
     "Model": "MLP",
     "Sample_Count": 319239,
-    "MAE": 1.2673163414001465,
-    "RMSE": 1.5565157161743906,
+    "MAE": 1.267316222190857,
+    "RMSE": 1.5565156395871187,
     "R2": 0.992624819278717,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "country",
+    "Category": "England",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 319239,
+    "MAE": 0.10340500175266756,
+    "RMSE": 0.24369017755711955,
+    "R2": 0.999819224031696,
     "Reliable_Sample": true
   },
   {
@@ -134,19 +164,19 @@
     "Category": "England",
     "Model": "Weighted Ensemble",
     "Sample_Count": 319239,
-    "MAE": 0.28929700610796877,
-    "RMSE": 0.3935569957523115,
-    "R2": 0.9995285019281586,
+    "MAE": 0.2892969735340519,
+    "RMSE": 0.39355697214716345,
+    "R2": 0.9995285019847185,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "country",
     "Category": "England",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 319239,
-    "MAE": 0.28929700610796877,
-    "RMSE": 0.3935569957523115,
-    "R2": 0.9995285019281586,
+    "MAE": 0.08705764263868332,
+    "RMSE": 0.1860595146512483,
+    "R2": 0.9998946189880371,
     "Reliable_Sample": true
   },
   {
@@ -154,8 +184,8 @@
     "Category": "Ireland",
     "Model": "Random Forest",
     "Sample_Count": 35342,
-    "MAE": 0.00817968792763794,
-    "RMSE": 0.07628406992062872,
+    "MAE": 0.008179687927637964,
+    "RMSE": 0.07628406992062874,
     "R2": 0.9998487847119307,
     "Reliable_Sample": true
   },
@@ -174,9 +204,19 @@
     "Category": "Ireland",
     "Model": "MLP",
     "Sample_Count": 35342,
-    "MAE": 1.712515950202942,
-    "RMSE": 1.9529840036997936,
-    "R2": 0.900888204574585,
+    "MAE": 1.7125153541564941,
+    "RMSE": 1.952983515383231,
+    "R2": 0.9008882641792297,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "country",
+    "Category": "Ireland",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 35342,
+    "MAE": 0.025405271713959187,
+    "RMSE": 0.13277898133857363,
+    "R2": 0.999541872190843,
     "Reliable_Sample": true
   },
   {
@@ -184,19 +224,19 @@
     "Category": "Ireland",
     "Model": "Weighted Ensemble",
     "Sample_Count": 35342,
-    "MAE": 0.352362439834435,
-    "RMSE": 0.4163735428762216,
-    "R2": 0.9954950057419213,
+    "MAE": 0.35236234817462736,
+    "RMSE": 0.4163734597711588,
+    "R2": 0.9954950075402478,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "country",
     "Category": "Ireland",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 35342,
-    "MAE": 0.352362439834435,
-    "RMSE": 0.4163735428762216,
-    "R2": 0.9954950057419213,
+    "MAE": 0.019726093858480453,
+    "RMSE": 0.07779393382506995,
+    "R2": 0.9998427629470825,
     "Reliable_Sample": true
   },
   {
@@ -204,7 +244,7 @@
     "Category": "USA",
     "Model": "Random Forest",
     "Sample_Count": 60850,
-    "MAE": 0.007752810022009899,
+    "MAE": 0.007752810022009931,
     "RMSE": 0.10359993336764052,
     "R2": 0.999482655849852,
     "Reliable_Sample": true
@@ -224,9 +264,19 @@
     "Category": "USA",
     "Model": "MLP",
     "Sample_Count": 60850,
-    "MAE": 1.7051161527633667,
-    "RMSE": 1.947442845398329,
-    "R2": 0.8171941637992859,
+    "MAE": 1.705115795135498,
+    "RMSE": 1.9474425393320964,
+    "R2": 0.8171942234039307,
+    "Reliable_Sample": true
+  },
+  {
+    "Subgroup_Field": "country",
+    "Category": "USA",
+    "Model": "Base Tree Ensemble",
+    "Sample_Count": 60850,
+    "MAE": 0.04423046605490551,
+    "RMSE": 0.25755549270160893,
+    "R2": 0.9968025613308843,
     "Reliable_Sample": true
   },
   {
@@ -234,19 +284,19 @@
     "Category": "USA",
     "Model": "Weighted Ensemble",
     "Sample_Count": 60850,
-    "MAE": 0.365007425676153,
-    "RMSE": 0.46502381510106494,
-    "R2": 0.9895765621759093,
+    "MAE": 0.3650073502473322,
+    "RMSE": 0.4650237464727676,
+    "R2": 0.9895765652524946,
     "Reliable_Sample": true
   },
   {
     "Subgroup_Field": "country",
     "Category": "USA",
-    "Model": "Hybrid (Weighted)",
+    "Model": "Residual Hybrid",
     "Sample_Count": 60850,
-    "MAE": 0.365007425676153,
-    "RMSE": 0.46502381510106494,
-    "R2": 0.9895765621759093,
+    "MAE": 0.017231954261660576,
+    "RMSE": 0.08024056752459817,
+    "R2": 0.9996896386146545,
     "Reliable_Sample": true
   }
 ]

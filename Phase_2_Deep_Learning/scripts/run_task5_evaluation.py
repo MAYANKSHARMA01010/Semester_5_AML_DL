@@ -71,6 +71,13 @@ def run_baseline_evaluation() -> pd.DataFrame:
         json.dump(metrics_df.to_dict(orient='records'), f, indent=2)
     print(f"✓ Saved JSON metrics: {json_path}")
 
+    artifacts_dir = REPO_ROOT / 'Phase_2_Deep_Learning' / 'artifacts'
+    if artifacts_dir.exists():
+        metrics_df.to_csv(artifacts_dir / 'baseline_model_comparison.csv', index=False)
+        with open(artifacts_dir / 'baseline_model_comparison.json', 'w', encoding='utf-8') as f:
+            json.dump(metrics_df.to_dict(orient='records'), f, indent=2)
+        print(f"✓ Mirror saved metrics to artifacts: {artifacts_dir}")
+
     return metrics_df
 
 if __name__ == '__main__':

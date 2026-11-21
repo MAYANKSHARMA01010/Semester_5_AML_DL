@@ -484,7 +484,8 @@ def mc_dropout_predictions(
     """
     Monte Carlo Dropout: stochastic forward passes for uncertainty estimation.
 
-    Keeps dropout active (model.train()) to sample different sub-networks.
+    Keeps dropout active while maintaining BatchNorm / LayerNorm in evaluation mode
+    to sample different sub-networks without corrupting batch normalization statistics.
 
     Args
     ----
@@ -500,16 +501,28 @@ def mc_dropout_predictions(
     """
     if device is None:
         device = next(model.parameters()).device
-    model.train()   # keep Dropout active
+
+    model.eval()
+    for m in model.modules():
+        if isinstance(m, nn.Dropout):
+            m.train()
+
     all_preds: List[np.ndarray] = []
     with torch.no_grad():
+        x_dev = x.to(device)
         for _ in range(n_samples):
-            p = model(x.to(device)).cpu().numpy().flatten()
+            p = model(x_dev).cpu().numpy().flatten()
             all_preds.append(p)
     model.eval()
 
     preds_arr = np.stack(all_preds, axis=0)   # (n_samples, N)
-    return preds_arr.mean(axis=0), preds_arr.std(axis=0)
+    mean_preds = preds_arr.mean(axis=0)
+    std_preds = preds_arr.std(axis=0)
+
+    if not np.all(np.isfinite(mean_preds)) or not np.all(np.isfinite(std_preds)):
+        raise ValueError("MC Dropout produced non-finite predictions.")
+
+    return mean_preds, std_preds
 
 
 def count_params_per_layer(model: nn.Module) -> str:

@@ -81,7 +81,7 @@ def test_model_evaluator_initialization():
 # ══════════════════════════════════════════════════════════════════════════════
 
 def test_model_evaluator_load_all():
-    """Verify all 3 trained models (RF, XGBoost, MLP) load from disk."""
+    """Verify all 4 trained models (RF, XGBoost, MLP, Hybrid) load from disk."""
     evaluator = ModelEvaluator(device=torch.device('cpu'))
     evaluator.load_all_models()
 
@@ -89,6 +89,7 @@ def test_model_evaluator_load_all():
     assert evaluator.xgb_model is not None, "Failed to load XGBoost"
     assert evaluator.mlp_model is not None, "Failed to load MLP"
     assert evaluator.weighted_ensemble is not None, "Failed to create WeightedEnsemble"
+    assert evaluator.hybrid_model is not None, "Failed to load HybridEnsemble"
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -109,6 +110,88 @@ def test_regression_metric_calculations():
     assert metrics["mae"] == pytest.approx(expected_mae, abs=1e-5)
     assert metrics["rmse"] == pytest.approx(expected_rmse, abs=1e-5)
     assert metrics["r2"] > 0.95  # High correlation
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 5. MC Dropout BatchNorm Safeguard
+# ══════════════════════════════════════════════════════════════════════════════
+
+def test_mc_dropout_batchnorm_preservation():
+    """Verify MC dropout keeps BatchNorm in eval mode and returns finite predictions."""
+    import torch.nn as nn
+    from Phase_2_Deep_Learning.src.dl_models import mc_dropout_predictions
+
+    class DummyNet(nn.Module):
+        def __init__(self):
+            super().__init__()
+            self.fc1 = nn.Linear(10, 8)
+            self.bn = nn.BatchNorm1d(8)
+            self.drop = nn.Dropout(0.5)
+            self.fc2 = nn.Linear(8, 1)
+
+        def forward(self, x):
+            assert not self.bn.training, "BatchNorm must stay in eval mode during MC sampling!"
+            x = self.fc1(x)
+            x = self.bn(x)
+            x = self.drop(x)
+            return self.fc2(x)
+
+    dummy = DummyNet()
+    x = torch.randn(5, 10)
+    mean_p, std_p = mc_dropout_predictions(dummy, x, n_samples=10, device=torch.device('cpu'))
+
+    assert mean_p.shape == (5,)
+    assert std_p.shape == (5,)
+    assert np.all(np.isfinite(mean_p))
+    assert np.all(np.isfinite(std_p))
+    assert not dummy.training, "Model should be in eval mode after sampling"
+    assert not dummy.bn.training, "BatchNorm should remain in eval mode"
+    assert not dummy.drop.training, "Dropout should be set to eval mode after sampling"
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 6. Prediction Diversity and Model Separation
+# ══════════════════════════════════════════════════════════════════════════════
+
+def test_model_evaluator_predict_all_models():
+    """Verify predict_all returns all 6 distinct model predictions with no duplicates."""
+    evaluator = ModelEvaluator(device=torch.device('cpu'))
+    evaluator.load_all_models()
+
+    test_path = REPO_ROOT / 'Phase_1_Machine_Learning' / 'data' / 'GeneratedOutput' / '02.Preprocessing&FeatureSelection' / 'test.parquet'
+    test_df = pd.read_parquet(test_path).head(100)
+
+    preds = evaluator.predict_all(test_df)
+    expected_models = [
+        'Random Forest',
+        'XGBoost',
+        'MLP',
+        'Base Tree Ensemble',
+        'Weighted Ensemble',
+        'Residual Hybrid',
+    ]
+    for m in expected_models:
+        assert m in preds, f"Missing prediction for model {m}"
+        assert len(preds[m]) == 100
+        assert np.all(np.isfinite(preds[m]))
+
+    # Verify Residual Hybrid is genuinely distinct from Weighted Ensemble
+    diff_hybrid_weighted = np.abs(preds['Residual Hybrid'] - preds['Weighted Ensemble'])
+    assert np.max(diff_hybrid_weighted) > 1e-3, "Residual Hybrid must not duplicate Weighted Ensemble"
+
+    # Verify Residual Hybrid is distinct from Base Tree Ensemble
+    diff_hybrid_base = np.abs(preds['Residual Hybrid'] - preds['Base Tree Ensemble'])
+    assert np.max(diff_hybrid_base) > 1e-4, "Residual Hybrid must not duplicate Base Tree Ensemble"
+
+    # Evaluate predictions
+    metrics_df = evaluator.evaluate_predictions(preds)
+    assert len(metrics_df) == 6
+    assert 'MAE' in metrics_df.columns
+    assert 'RMSE' in metrics_df.columns
+    assert 'R2' in metrics_df.columns
+    assert 'MedAE' in metrics_df.columns
+    assert 'MaxAE' in metrics_df.columns
+    assert 'ExplainedVariance' in metrics_df.columns
 
 
 # ══════════════════════════════════════════════════════════════════════════════
