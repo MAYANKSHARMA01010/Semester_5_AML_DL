@@ -1,8 +1,13 @@
 {
   "integrated_gradients_sample_size": 1000,
   "integrated_gradients_steps": 50,
-  "baseline_definition": "zero_tensor_standardized_space_population_mean",
-  "mean_completeness_divergence": 0.2398897111415863,
+  "baseline_definition": "modal_observed_training_category_with_standardized_zero_mean_numerical",
+  "baseline_modal_country": "England",
+  "baseline_modal_waterbody": "River",
+  "baseline_prediction_value": 86.72331237792969,
+  "mean_completeness_divergence": 0.2529112994670868,
+  "p95_completeness_divergence": 1.199995517730713,
+  "max_completeness_divergence": 5.878028869628906,
   "top_5_global_features_53dim": [
     "log1p_orthophosphate",
     "log1p_nitrogen",
@@ -18,5 +23,5 @@
     "exceedance_counter"
   ],
   "top_feature_name": "log1p_orthophosphate",
-  "top_feature_importance": 5.860206127166748
+  "top_feature_importance": 6.098287105560303
 }

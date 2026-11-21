@@ -2,30 +2,40 @@
   "total_test_observations": 422943,
   "models_analyzed": [
     "Random Forest",
+    "Residual Hybrid",
+    "Base Tree Ensemble",
     "XGBoost",
-    "MLP",
-    "Weighted Ensemble"
+    "Weighted Ensemble",
+    "MLP"
   ],
+  "residual_sign_convention": "Residual = Prediction - Actual (y_pred - y_true)",
   "model_mae": {
-    "Random Forest": 0.051426793314589284,
+    "Random Forest": 0.05142679331458906,
+    "Residual Hybrid": 0.07099543511867523,
+    "Base Tree Ensemble": 0.09003054223787361,
     "XGBoost": 0.1613650918006897,
-    "MLP": 1.379963994026184,
-    "Weighted Ensemble": 0.3096375653383322
+    "Weighted Ensemble": 0.3096375653383321,
+    "MLP": 1.379963994026184
   },
   "model_rmse": {
-    "Random Forest": 0.20155777109819645,
+    "Random Forest": 0.20155777109819642,
+    "Residual Hybrid": 0.1677788645029068,
+    "Base Tree Ensemble": 0.24637745310407172,
     "XGBoost": 0.4364004135131836,
-    "MLP": 1.671957015991211,
-    "Weighted Ensemble": 0.4154593038607086
+    "Weighted Ensemble": 0.4154593038607085,
+    "MLP": 1.671957015991211
   },
   "model_mean_residual": {
-    "Random Forest": -0.0008591961911559352,
-    "XGBoost": -0.00016605894779786468,
-    "MLP": 0.8888843059539795,
-    "Weighted Ensemble": 0.1773667592406935
+    "Random Forest": 0.0008591961911560394,
+    "Residual Hybrid": 0.0010914972517639399,
+    "Base Tree Ensemble": 0.0005126275733378873,
+    "XGBoost": 0.00016605894779786468,
+    "Weighted Ensemble": -0.1773667592406935,
+    "MLP": -0.8888843059539795
   },
   "mlp_p95_error": 3.089527130126953,
   "mlp_max_error": 31.132713317871094,
-  "ensemble_improves_tree_pct": 13.15803784434309,
-  "residual_mlp_checkpoint_found": false
+  "hybrid_reduces_tree_rmse_pct": 31.901516781193052,
+  "hybrid_reduces_peak_error_pct": 54.933083851325634,
+  "residual_mlp_checkpoint_found": true
 }
