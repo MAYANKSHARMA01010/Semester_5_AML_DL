@@ -1,0 +1,22 @@
+{
+  "integrated_gradients_sample_size": 1000,
+  "integrated_gradients_steps": 50,
+  "baseline_definition": "zero_tensor_standardized_space_population_mean",
+  "mean_completeness_divergence": 0.2398897111415863,
+  "top_5_global_features_53dim": [
+    "log1p_orthophosphate",
+    "log1p_nitrogen",
+    "log1p_np_ratio",
+    "log1p_ammonia",
+    "exceedance_counter"
+  ],
+  "top_5_global_features_38dim": [
+    "log1p_orthophosphate",
+    "log1p_nitrogen",
+    "log1p_np_ratio",
+    "log1p_ammonia",
+    "exceedance_counter"
+  ],
+  "top_feature_name": "log1p_orthophosphate",
+  "top_feature_importance": 5.860206127166748
+}

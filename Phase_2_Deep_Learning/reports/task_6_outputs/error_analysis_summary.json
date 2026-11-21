@@ -1,0 +1,31 @@
+{
+  "total_test_observations": 422943,
+  "models_analyzed": [
+    "Random Forest",
+    "XGBoost",
+    "MLP",
+    "Weighted Ensemble"
+  ],
+  "model_mae": {
+    "Random Forest": 0.051426793314589284,
+    "XGBoost": 0.1613650918006897,
+    "MLP": 1.379963994026184,
+    "Weighted Ensemble": 0.3096375653383322
+  },
+  "model_rmse": {
+    "Random Forest": 0.20155777109819645,
+    "XGBoost": 0.4364004135131836,
+    "MLP": 1.671957015991211,
+    "Weighted Ensemble": 0.4154593038607086
+  },
+  "model_mean_residual": {
+    "Random Forest": -0.0008591961911559352,
+    "XGBoost": -0.00016605894779786468,
+    "MLP": 0.8888843059539795,
+    "Weighted Ensemble": 0.1773667592406935
+  },
+  "mlp_p95_error": 3.089527130126953,
+  "mlp_max_error": 31.132713317871094,
+  "ensemble_improves_tree_pct": 13.15803784434309,
+  "residual_mlp_checkpoint_found": false
+}

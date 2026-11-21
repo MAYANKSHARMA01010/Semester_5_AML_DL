@@ -1,0 +1,6 @@
+Case_Type,Actual_WQI,Predicted_WQI,Prediction_Error,Top_Positive_Feature,Top_Positive_Attribution,Top_Negative_Feature,Top_Negative_Attribution
+Excellent Quality (Low Error),100.0,100.124755859375,0.124755859375,log1p_nitrogen,5.581943035125732,log1p_np_ratio,-1.7106162309646606
+Poor Quality (Low Error),44.89560959017086,44.76141357421875,-0.1341960159521065,log1p_orthophosphate,1.7939729690551758,log1p_unionized_ammonia,-22.59571075439453
+Typical Case (Median Error),100.0,98.69966125488281,-1.3003387451171875,log1p_nitrogen,7.237075328826904,log1p_np_ratio,-1.8641347885131836
+Notable Overprediction,93.1883630245073,87.06611633300781,-6.122246691499484,log1p_orthophosphate,3.566234588623047,exceedance_counter,-2.2432332038879395
+Notable Underprediction,70.76246008293454,80.27510833740234,9.512648254467805,log1p_orthophosphate,3.2410624027252197,log1p_bod,-3.9789583683013916
