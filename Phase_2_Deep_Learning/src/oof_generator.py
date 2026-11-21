@@ -1,31 +1,31 @@
 """
-Phase 4 — Out-of-Fold Prediction Generator
-===========================================
-Generates out-of-fold predictions for RF and XGBoost using KFold cross-validation
-on the training set, ensuring no data leakage into the residual MLP training.
+Phase 2 Deep Learning — Task 4: Out-of-Fold Prediction Generator
+================================================================
+Generates leakage-free out-of-fold (OOF) predictions for Phase 1 tree models
+(Random Forest and XGBoost) using KFold cross-validation on the training set.
 
-Functions
----------
-generate_oof_predictions  — KFold OOF predictions for a single model type.
-generate_ensemble_oof     — OOF predictions for both RF and XGBoost.
-compute_residuals         — Signed residuals + diagnostic statistics.
-save_oof_artifacts        — Persist OOF predictions to parquet.
+Strict Design Principles:
+1. Feature Separation: Tree models receive their canonical 38-feature representation.
+2. Leakage Prevention: KFold splitting is performed strictly on the training partition.
+   Validation and test observations are never exposed to fold training.
+3. Verification: Exact 1-to-1 assignment assertions ensure no missing or duplicate predictions.
 """
 
 from __future__ import annotations
 
 import sys
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import KFold
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
+from sklearn.ensemble import RandomForestRegressor
+from xgboost import XGBRegressor
 
-# ── Add project root to sys.path so Phase 1 src is importable ─────────────────
 _HERE = Path(__file__).resolve()
-REPO_ROOT = _HERE.parents[2]  # Phase_2_Deep_Learning/src → repo root
+REPO_ROOT = _HERE.parents[2]
 if str(REPO_ROOT) not in sys.path:
     sys.path.insert(0, str(REPO_ROOT))
 
@@ -35,207 +35,268 @@ from Phase_1_Machine_Learning.src.models import (
 )
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# OOF Prediction Generator
-# ══════════════════════════════════════════════════════════════════════════════
+def get_phase1_model_defaults(random_state: int = 42) -> Dict[str, Dict[str, Any]]:
+    """
+    Return exact hyperparameter configurations matching Phase 1 trained models.
+    Verified against Phase 1 training notebook and serialized artifacts:
+      - Random Forest: 30 trees, max_depth=14, min_samples_leaf=5, max_features=1.0
+      - XGBoost: 150 trees, max_depth=6, lr=0.08, subsample=0.8, colsample=0.8, hist
+    """
+    return {
+        'rf': {
+            'n_estimators': 30,
+            'max_depth': 14,
+            'min_samples_leaf': 5,
+            'max_features': 1.0,
+            'random_state': random_state,
+            'n_jobs': -1,
+        },
+        'xgb': {
+            'n_estimators': 150,
+            'max_depth': 6,
+            'learning_rate': 0.08,
+            'subsample': 0.8,
+            'colsample_bytree': 0.8,
+            'tree_method': 'hist',
+            'random_state': random_state,
+            'n_jobs': -1,
+        },
+    }
+
 
 def generate_oof_predictions(
-    X_train_np  : np.ndarray,
-    y_train_np  : np.ndarray,
-    model_type  : str = 'rf',
-    n_splits    : int = 5,
+    X_train_tree: Union[np.ndarray, pd.DataFrame],
+    y_train: Union[np.ndarray, pd.Series],
+    model_type: str = 'rf',
+    n_splits: int = 5,
     random_state: int = 42,
     **model_kwargs: Any,
 ) -> Tuple[np.ndarray, List[Dict[str, float]]]:
     """
-    Generate out-of-fold predictions using KFold cross-validation.
+    Generate out-of-fold predictions using KFold cross-validation on training data.
 
-    Trains a fresh model on each fold's training subset and predicts on the
-    held-out validation subset, assembling full training-set OOF predictions
-    with zero data leakage.
+    Args:
+        X_train_tree: (N, 38) numpy array or DataFrame containing the Phase 1 tree features.
+        y_train: (N,) target array (ccme_values).
+        model_type: 'rf' for Random Forest or 'xgb' for XGBoost.
+        n_splits: Number of cross-validation folds (default: 5).
+        random_state: Reproducibility seed.
+        **model_kwargs: Hyperparameter overrides forwarded to the model constructor.
 
-    Args
-    ----
-    X_train_np   : (N, 53) numpy feature matrix for the training split.
-    y_train_np   : (N,) numpy target array.
-    model_type   : 'rf' for RandomForest or 'xgb' for XGBoost.
-    n_splits     : Number of KFold splits (default 5).
-    random_state : Reproducibility seed.
-    **model_kwargs: Additional keyword arguments forwarded to the model factory.
-
-    Returns
-    -------
-    oof_preds    : (N,) numpy array of out-of-fold predictions.
-    fold_metrics : List of dicts with keys 'fold', 'mae', 'rmse', 'r2' per fold.
+    Returns:
+        oof_preds: (N,) array of out-of-fold predictions.
+        fold_metrics: List of metric dicts for each fold (mae, rmse, r2).
     """
     if model_type not in ('rf', 'xgb'):
         raise ValueError(f"model_type must be 'rf' or 'xgb', got '{model_type}'")
 
+    if isinstance(X_train_tree, pd.DataFrame):
+        X_np = X_train_tree.to_numpy(dtype=np.float32)
+    else:
+        X_np = np.asarray(X_train_tree, dtype=np.float32)
+
+    y_np = np.asarray(y_train, dtype=np.float64).flatten()
+
+    n_samples = len(y_np)
+    if len(X_np) != n_samples:
+        raise ValueError(
+            f"Row count mismatch between features ({len(X_np)}) and target ({n_samples})"
+        )
+
+    if np.isnan(X_np).any() or np.isnan(y_np).any():
+        raise ValueError("Input data contains NaN values before OOF generation.")
+
+    defaults = get_phase1_model_defaults(random_state=random_state)[model_type]
+    defaults.update(model_kwargs)
+
     kf = KFold(n_splits=n_splits, shuffle=True, random_state=random_state)
 
-    oof_preds    = np.zeros(len(y_train_np), dtype=np.float64)
-    fold_metrics : List[Dict[str, float]] = []
+    oof_preds = np.zeros(n_samples, dtype=np.float64)
+    assigned_counts = np.zeros(n_samples, dtype=np.int32)
+    fold_metrics: List[Dict[str, float]] = []
 
-    for fold_idx, (train_idx, val_idx) in enumerate(kf.split(X_train_np)):
-        X_fold_train, X_fold_val = X_train_np[train_idx], X_train_np[val_idx]
-        y_fold_train, y_fold_val = y_train_np[train_idx], y_train_np[val_idx]
+    for fold_idx, (train_idx, val_idx) in enumerate(kf.split(X_np)):
+        X_fold_train, X_fold_val = X_np[train_idx], X_np[val_idx]
+        y_fold_train, y_fold_val = y_np[train_idx], y_np[val_idx]
 
-        # Instantiate a fresh model for this fold
         if model_type == 'rf':
-            model = create_random_forest_regressor(random_state=random_state, **model_kwargs)
+            model = RandomForestRegressor(**defaults)
         else:
-            model = create_xgboost_regressor(random_state=random_state, **model_kwargs)
+            model = XGBRegressor(**defaults)
 
         model.fit(X_fold_train, y_fold_train)
         fold_preds = model.predict(X_fold_val)
-        oof_preds[val_idx] = fold_preds
 
-        # Compute per-fold metrics
-        mae  = float(mean_absolute_error(y_fold_val, fold_preds))
-        mse  = float(mean_squared_error(y_fold_val, fold_preds))
+        oof_preds[val_idx] = fold_preds
+        assigned_counts[val_idx] += 1
+
+        mae = float(mean_absolute_error(y_fold_val, fold_preds))
+        mse = float(mean_squared_error(y_fold_val, fold_preds))
         rmse = float(np.sqrt(mse))
-        r2   = float(r2_score(y_fold_val, fold_preds))
+        r2 = float(r2_score(y_fold_val, fold_preds))
 
         fold_metrics.append({
             'fold': fold_idx + 1,
-            'mae' : mae,
+            'mae': mae,
             'rmse': rmse,
-            'r2'  : r2,
+            'r2': r2,
+            'val_samples': len(val_idx),
         })
 
         print(
             f"  [{model_type.upper()} Fold {fold_idx + 1}/{n_splits}] "
-            f"MAE={mae:.4f}  RMSE={rmse:.4f}  R²={r2:.4f}"
+            f"Val Samples: {len(val_idx):,}  |  MAE: {mae:.4f}  RMSE: {rmse:.4f}  R²: {r2:.4f}"
         )
+
+    if not np.all(assigned_counts == 1):
+        missing = int(np.sum(assigned_counts == 0))
+        duplicates = int(np.sum(assigned_counts > 1))
+        raise AssertionError(
+            f"OOF assignment failure: {missing} missing, {duplicates} duplicates out of {n_samples} rows."
+        )
+
+    if np.isnan(oof_preds).any() or np.isinf(oof_preds).any():
+        raise AssertionError("OOF predictions contain NaN or Inf values.")
 
     return oof_preds, fold_metrics
 
 
 def generate_ensemble_oof(
-    X_train_np  : np.ndarray,
-    y_train_np  : np.ndarray,
-    n_splits    : int = 5,
+    X_train_tree: Union[np.ndarray, pd.DataFrame],
+    y_train: Union[np.ndarray, pd.Series],
+    n_splits: int = 5,
     random_state: int = 42,
+    rf_kwargs: Optional[Dict[str, Any]] = None,
+    xgb_kwargs: Optional[Dict[str, Any]] = None,
 ) -> Tuple[np.ndarray, np.ndarray, Dict[str, List[Dict[str, float]]]]:
     """
     Generate out-of-fold predictions for both Random Forest and XGBoost.
 
-    Args
-    ----
-    X_train_np   : (N, 53) numpy feature matrix for the training split.
-    y_train_np   : (N,) numpy target array.
-    n_splits     : Number of KFold splits (default 5).
-    random_state : Reproducibility seed.
+    Args:
+        X_train_tree: (N, 38) Phase 1 tree feature matrix.
+        y_train: (N,) target array.
+        n_splits: Number of cross-validation splits.
+        random_state: Reproducibility seed.
+        rf_kwargs: Optional hyperparameter overrides for Random Forest.
+        xgb_kwargs: Optional hyperparameter overrides for XGBoost.
 
-    Returns
-    -------
-    oof_rf           : (N,) RF out-of-fold predictions.
-    oof_xgb          : (N,) XGBoost out-of-fold predictions.
-    fold_metrics_dict: Dict with keys 'rf' and 'xgb', each a list of per-fold metric dicts.
+    Returns:
+        oof_rf: (N,) RF out-of-fold predictions.
+        oof_xgb: (N,) XGBoost out-of-fold predictions.
+        fold_metrics_dict: Dictionary containing fold metrics for 'rf' and 'xgb'.
     """
+    rf_kwargs = rf_kwargs or {}
+    xgb_kwargs = xgb_kwargs or {}
+
     print("=" * 60)
-    print("Generating RF out-of-fold predictions …")
+    print(f"Generating Random Forest OOF predictions ({n_splits}-fold CV) ...")
     print("=" * 60)
     oof_rf, rf_metrics = generate_oof_predictions(
-        X_train_np, y_train_np,
-        model_type='rf', n_splits=n_splits, random_state=random_state,
+        X_train_tree=X_train_tree,
+        y_train=y_train,
+        model_type='rf',
+        n_splits=n_splits,
+        random_state=random_state,
+        **rf_kwargs,
     )
 
     print()
     print("=" * 60)
-    print("Generating XGBoost out-of-fold predictions …")
+    print(f"Generating XGBoost OOF predictions ({n_splits}-fold CV) ...")
     print("=" * 60)
     oof_xgb, xgb_metrics = generate_oof_predictions(
-        X_train_np, y_train_np,
-        model_type='xgb', n_splits=n_splits, random_state=random_state,
+        X_train_tree=X_train_tree,
+        y_train=y_train,
+        model_type='xgb',
+        n_splits=n_splits,
+        random_state=random_state,
+        **xgb_kwargs,
     )
 
-    fold_metrics_dict = {
-        'rf' : rf_metrics,
-        'xgb': xgb_metrics,
-    }
-    return oof_rf, oof_xgb, fold_metrics_dict
+    return oof_rf, oof_xgb, {'rf': rf_metrics, 'xgb': xgb_metrics}
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# Residual Computation
-# ══════════════════════════════════════════════════════════════════════════════
 
 def compute_residuals(
-    y_true_np   : np.ndarray,
-    base_pred_np: np.ndarray,
+    y_true: Union[np.ndarray, pd.Series],
+    base_pred: Union[np.ndarray, pd.Series],
 ) -> Tuple[np.ndarray, Dict[str, float]]:
     """
-    Compute signed residuals: residuals = y_true − base_pred.
+    Compute signed residuals: residual = y_true - base_pred.
 
-    Args
-    ----
-    y_true_np    : (N,) ground-truth CCME WQI values.
-    base_pred_np : (N,) base model (RF/XGB) predictions.
+    Args:
+        y_true: Ground-truth target values.
+        base_pred: Base model predictions.
 
-    Returns
-    -------
-    residuals : (N,) signed residual array.
-    stats     : Dict with diagnostic statistics:
-                  mean, std, max_abs, pct_within_5
+    Returns:
+        residuals: (N,) signed residual values.
+        stats: Dictionary of diagnostic statistics.
     """
-    y_true_np    = np.asarray(y_true_np,    dtype=np.float64).flatten()
-    base_pred_np = np.asarray(base_pred_np, dtype=np.float64).flatten()
+    y_arr = np.asarray(y_true, dtype=np.float64).flatten()
+    pred_arr = np.asarray(base_pred, dtype=np.float64).flatten()
 
-    residuals = y_true_np - base_pred_np
+    if len(y_arr) != len(pred_arr):
+        raise ValueError(f"Shape mismatch: y_true={len(y_arr)}, base_pred={len(pred_arr)}")
+
+    residuals = y_arr - pred_arr
 
     stats = {
-        'mean'        : float(np.mean(residuals)),
-        'std'         : float(np.std(residuals)),
-        'max_abs'     : float(np.max(np.abs(residuals))),
+        'mean': float(np.mean(residuals)),
+        'std': float(np.std(residuals)),
+        'median': float(np.median(residuals)),
+        'mae': float(np.mean(np.abs(residuals))),
+        'rmse': float(np.sqrt(np.mean(residuals ** 2))),
+        'max_abs': float(np.max(np.abs(residuals))),
+        'pct_within_1': float(100.0 * np.mean(np.abs(residuals) <= 1.0)),
         'pct_within_5': float(100.0 * np.mean(np.abs(residuals) <= 5.0)),
     }
-
     return residuals, stats
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# OOF Artifact Persistence
-# ══════════════════════════════════════════════════════════════════════════════
-
 def save_oof_artifacts(
-    oof_rf       : np.ndarray,
-    oof_xgb      : np.ndarray,
-    residuals_rf : np.ndarray,
+    oof_rf: np.ndarray,
+    oof_xgb: np.ndarray,
+    residuals_rf: np.ndarray,
     residuals_xgb: np.ndarray,
-    y_train      : np.ndarray,
-    save_dir     : Path,
+    y_train: np.ndarray,
+    save_dir: Union[str, Path],
+    filename: str = 'oof_predictions.parquet',
 ) -> Path:
     """
     Persist OOF predictions and residuals to a parquet file.
-
-    Columns: y_true, oof_rf, oof_xgb, residual_rf, residual_xgb.
-
-    Args
-    ----
-    oof_rf        : (N,) RF out-of-fold predictions.
-    oof_xgb       : (N,) XGBoost out-of-fold predictions.
-    residuals_rf  : (N,) RF residuals (y_true − oof_rf).
-    residuals_xgb : (N,) XGB residuals (y_true − oof_xgb).
-    y_train       : (N,) ground-truth training targets.
-    save_dir      : Directory where `oof_predictions.parquet` will be saved.
-
-    Returns
-    -------
-    Path to saved parquet file.
+    Includes both individual model residuals and combined base tree predictions.
     """
-    save_dir = Path(save_dir)
-    save_dir.mkdir(parents=True, exist_ok=True)
+    save_path = Path(save_dir) / filename
+    save_path.parent.mkdir(parents=True, exist_ok=True)
+
+    y_arr = np.asarray(y_train, dtype=np.float64).flatten()
+    rf_arr = np.asarray(oof_rf, dtype=np.float64).flatten()
+    xgb_arr = np.asarray(oof_xgb, dtype=np.float64).flatten()
+    base_arr = 0.5 * (rf_arr + xgb_arr)
 
     df_oof = pd.DataFrame({
-        'y_true'      : np.asarray(y_train).flatten(),
-        'oof_rf'      : np.asarray(oof_rf).flatten(),
-        'oof_xgb'     : np.asarray(oof_xgb).flatten(),
-        'residual_rf' : np.asarray(residuals_rf).flatten(),
-        'residual_xgb': np.asarray(residuals_xgb).flatten(),
+        'y_true': y_arr,
+        'oof_rf': rf_arr,
+        'oof_xgb': xgb_arr,
+        'oof_base_tree': base_arr,
+        'residual_rf': np.asarray(residuals_rf, dtype=np.float64).flatten(),
+        'residual_xgb': np.asarray(residuals_xgb, dtype=np.float64).flatten(),
+        'residual_base_tree': y_arr - base_arr,
     })
 
-    out_path = save_dir / 'oof_predictions.parquet'
-    df_oof.to_parquet(out_path, index=False)
-    print(f'✓ OOF artifacts saved → {out_path}  ({len(df_oof):,} rows)')
-    return out_path
+    df_oof.to_parquet(save_path, index=False)
+    print(f"✓ OOF artifacts saved → {save_path} ({len(df_oof):,} rows)")
+    return save_path
+
+
+def load_oof_artifacts(file_path: Union[str, Path]) -> pd.DataFrame:
+    """Load cached OOF predictions from a parquet file or directory containing oof_predictions.parquet."""
+    p = Path(file_path)
+    if p.is_dir():
+        p = p / 'oof_predictions.parquet'
+    if not p.exists():
+        raise FileNotFoundError(f"OOF predictions file not found at: {p}")
+    df = pd.read_parquet(p)
+    required_cols = {'y_true', 'oof_rf', 'oof_xgb'}
+    if not required_cols.issubset(df.columns):
+        raise ValueError(f"OOF file missing required columns: {required_cols - set(df.columns)}")
+    return df

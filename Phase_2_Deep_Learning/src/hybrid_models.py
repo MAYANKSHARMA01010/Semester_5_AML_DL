@@ -1,10 +1,15 @@
 """
-Phase 4 — Hybrid ML + DL Model Components
-==========================================
-HybridConfig      — Dataclass for all hyperparameters.
-ResidualMLPNet    — Lightweight MLP that predicts residuals (y - base_pred).
-HybridEnsemble   — Wrapper combining RF/XGB base predictions + ResidualMLPNet correction.
-WeightedEnsemble — Simple weighted average of RF, XGB and MLP base predictions.
+Phase 2 Deep Learning — Task 4: Hybrid ML + DL Model Components
+================================================================
+Defines hybrid model architectures combining Phase 1 tree base predictions
+with Phase 2 deep learning residual corrections.
+
+Components
+----------
+HybridConfig      — Dataclass holding hyperparameter configurations.
+ResidualMLPNet    — PyTorch neural network predicting signed residual errors.
+HybridEnsemble    — Module integrating tree base predictions + ResidualMLPNet corrections.
+WeightedEnsemble  — Linear combination of RF, XGBoost, and base MLP predictions.
 """
 
 from __future__ import annotations
@@ -12,117 +17,93 @@ from __future__ import annotations
 import json
 from dataclasses import dataclass, field, asdict
 from pathlib import Path
-from typing import Any, Dict, List, Optional, Tuple
+from typing import Any, Dict, List, Optional, Tuple, Union
 
 import numpy as np
 import torch
 import torch.nn as nn
 
-from .dl_models import MLPBlock, MLPConfig
+from .dl_models import MLPBlock
 
 SEED = 42
 
-
-# ══════════════════════════════════════════════════════════════════════════════
-# Configuration Dataclass
-# ══════════════════════════════════════════════════════════════════════════════
 
 @dataclass
 class HybridConfig:
     """
     Hyperparameter configuration for the Hybrid ML + DL ensemble.
 
-    Attributes
-    ----------
-    input_dim       : Base feature dimension (53 = 36 numerical + 17 OHE).
-    hidden_dims     : Hidden layer widths for ResidualMLPNet.
-    dropout_rate    : Dropout probability applied after each hidden block.
-    use_batch_norm  : Whether to apply BatchNorm1d in hidden blocks.
-    rf_weight       : Weight for Random Forest predictions in WeightedEnsemble.
-    xgb_weight      : Weight for XGBoost predictions in WeightedEnsemble.
-    mlp_weight      : Weight for base MLP predictions in WeightedEnsemble.
-    residual_weight : Scale factor applied to residual correction output.
-    name            : Human-readable experiment identifier.
+    Attributes:
+        input_dim       : DL feature dimension (53 = 36 numerical + 17 OHE).
+        hidden_dims     : Hidden layer dimensions for ResidualMLPNet.
+        dropout_rate    : Dropout probability in hidden blocks.
+        use_batch_norm  : Whether to use BatchNorm1d in hidden blocks.
+        rf_weight       : RF weight in WeightedEnsemble.
+        xgb_weight      : XGBoost weight in WeightedEnsemble.
+        mlp_weight      : Base MLP weight in WeightedEnsemble.
+        residual_weight : Scaling factor applied to predicted residual correction.
+        name            : Identifier for the model architecture.
     """
-
-    input_dim      : int        = 53
-    hidden_dims    : List[int]  = field(default_factory=lambda: [256, 128, 64])
-    dropout_rate   : float      = 0.2
-    use_batch_norm : bool       = True
-    rf_weight      : float      = 0.4
-    xgb_weight     : float      = 0.4
-    mlp_weight     : float      = 0.2
-    residual_weight: float      = 1.0
-    name           : str        = 'Hybrid_RF_XGB_ResidualMLP'
+    input_dim: int = 53
+    hidden_dims: List[int] = field(default_factory=lambda: [256, 128, 64])
+    dropout_rate: float = 0.2
+    use_batch_norm: bool = True
+    rf_weight: float = 0.4
+    xgb_weight: float = 0.4
+    mlp_weight: float = 0.2
+    residual_weight: float = 1.0
+    name: str = 'Hybrid_RF_XGB_ResidualMLP'
 
     def to_dict(self) -> Dict[str, Any]:
-        """Serialize config to plain dict (JSON-safe)."""
+        """Serialize config to plain dictionary."""
         return asdict(self)
 
     @classmethod
     def from_dict(cls, d: Dict[str, Any]) -> 'HybridConfig':
-        """Reconstruct HybridConfig from a dict (e.g., loaded from JSON)."""
+        """Reconstruct HybridConfig from a dictionary."""
         return cls(**{k: v for k, v in d.items() if k in cls.__dataclass_fields__})
 
     @property
     def residual_input_dim(self) -> int:
-        """Input dimension for ResidualMLPNet: features (53) + 1 base prediction = 54."""
+        """Total input dimension for ResidualMLPNet: 53 DL features + 1 base tree prediction = 54."""
         return self.input_dim + 1
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# ResidualMLPNet — lightweight residual corrector
-# ══════════════════════════════════════════════════════════════════════════════
-
 class ResidualMLPNet(nn.Module):
     """
-    Lightweight MLP that predicts the signed residual correction
-    (y_true − base_pred) from concatenated [features, base_prediction].
+    Lightweight Deep Neural Network that predicts signed residual errors
+    (residual = y_true - base_pred) from input features + base prediction.
 
-    Architecture (default HybridConfig):
-        Input(54) → Block(54→256) → Block(256→128) → Block(128→64) → Linear(64→1)
-
-    The model intentionally uses a lighter topology (3 blocks vs 4 in WaterQualityMLP)
-    and lower dropout (0.2) to avoid over-correcting the base tree predictions.
-
-    Args
-    ----
-    config : HybridConfig carrying architecture hyperparameters.
+    Input dimension: 53 scaled/encoded features + 1 base prediction = 54 inputs.
+    Output: 1 scalar representing predicted residual correction.
     """
 
-    def __init__(self, config: HybridConfig):
+    def __init__(self, config: Optional[HybridConfig] = None):
         super().__init__()
-        self.config = config
+        self.config = config or HybridConfig()
 
-        # Input dimension: 53 features + 1 base prediction scalar
-        actual_input_dim = config.input_dim + 1
+        actual_input_dim = self.config.input_dim + 1
+        dims = [actual_input_dim] + self.config.hidden_dims
 
-        # Build hidden blocks using reusable MLPBlock from dl_models
-        dims = [actual_input_dim] + config.hidden_dims
         self.hidden_layers = nn.ModuleList([
             MLPBlock(
-                in_features    = dims[i],
-                out_features   = dims[i + 1],
-                dropout_rate   = config.dropout_rate,
-                use_batch_norm = config.use_batch_norm,
-                activation     = 'relu',
+                in_features=dims[i],
+                out_features=dims[i + 1],
+                dropout_rate=self.config.dropout_rate,
+                use_batch_norm=self.config.use_batch_norm,
+                activation='relu',
             )
             for i in range(len(dims) - 1)
         ])
 
-        # Output head: predicts signed residual (single scalar)
-        self.output_layer = nn.Linear(config.hidden_dims[-1], 1)
-
-        # Kaiming He initialisation for all linear layers
+        self.output_layer = nn.Linear(self.config.hidden_dims[-1], 1)
         self._initialize_weights()
 
     def _initialize_weights(self) -> None:
-        """Kaiming He normal init for linear layers; ones/zeros for BatchNorm."""
+        """Kaiming normal initialization for linear layers."""
         for module in self.modules():
             if isinstance(module, nn.Linear):
-                nn.init.kaiming_normal_(
-                    module.weight, mode='fan_out', nonlinearity='relu'
-                )
+                nn.init.kaiming_normal_(module.weight, mode='fan_out', nonlinearity='relu')
                 if module.bias is not None:
                     nn.init.zeros_(module.bias)
             elif isinstance(module, nn.BatchNorm1d):
@@ -132,15 +113,10 @@ class ResidualMLPNet(nn.Module):
     def forward(self, x: torch.Tensor) -> torch.Tensor:
         """
         Forward pass.
-
-        Args
-        ----
-        x : Tensor of shape (batch_size, input_dim + 1) where the last element
-            is the base model prediction scalar.
-
-        Returns
-        -------
-        Tensor of shape (batch_size, 1) — predicted signed residual correction.
+        Args:
+            x: Tensor of shape (batch_size, 54).
+        Returns:
+            Tensor of shape (batch_size, 1) representing predicted residual.
         """
         expected_dim = self.config.input_dim + 1
         if x.shape[-1] != expected_dim:
@@ -153,13 +129,13 @@ class ResidualMLPNet(nn.Module):
         return self.output_layer(x)
 
     def count_parameters(self) -> Dict[str, int]:
-        """Return total and trainable parameter counts."""
-        total     = sum(p.numel() for p in self.parameters())
+        """Return parameter counts."""
+        total = sum(p.numel() for p in self.parameters())
         trainable = sum(p.numel() for p in self.parameters() if p.requires_grad)
         return {'total': total, 'trainable': trainable}
 
     def architecture_summary(self) -> str:
-        """Human-readable architecture summary string."""
+        """Return formatted architecture summary string."""
         actual_in = self.config.input_dim + 1
         dims = [actual_in] + self.config.hidden_dims + [1]
         flow = ' → '.join(str(d) for d in dims)
@@ -173,45 +149,37 @@ class ResidualMLPNet(nn.Module):
         )
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# HybridEnsemble — tree base + residual correction wrapper
-# ══════════════════════════════════════════════════════════════════════════════
-
 class HybridEnsemble(nn.Module):
     """
-    Wraps ResidualMLPNet to provide a corrected prediction on top of tree-model
-    base predictions.
-
-    Usage
-    -----
-    ensemble = HybridEnsemble(config)
-    corrected = ensemble.predict_numpy(X_features_np, base_pred_np)
+    Integrates tree base predictions with ResidualMLPNet predictions:
+        Hybrid Prediction = base_pred + residual_weight * predicted_residual
     """
 
-    def __init__(self, config: HybridConfig):
+    def __init__(self, config: Optional[HybridConfig] = None):
         super().__init__()
-        self.config = config
-        self.residual_net = ResidualMLPNet(config)
+        self.config = config or HybridConfig()
+        self.residual_net = ResidualMLPNet(self.config)
 
     def forward(
         self,
-        x_features : torch.Tensor,
-        base_pred  : torch.Tensor,
+        x_features: torch.Tensor,
+        base_pred: torch.Tensor,
     ) -> torch.Tensor:
         """
-        Forward pass: concatenate features + base_pred and predict residual correction.
-
-        Args
-        ----
-        x_features : Tensor (batch, 53) — scaled + encoded feature vector.
-        base_pred  : Tensor (batch, 1)  — base model prediction.
-
-        Returns
-        -------
-        Tensor (batch, 1) — corrected prediction (base_pred + residual).
+        Forward pass.
+        Args:
+            x_features: Tensor of shape (batch, 53).
+            base_pred: Tensor of shape (batch, 1) or (batch,).
+        Returns:
+            Tensor of shape (batch, 1) with corrected predictions.
         """
+        if x_features.shape[-1] != self.config.input_dim:
+            raise ValueError(
+                f"Feature dimension mismatch: expected {self.config.input_dim}, got {x_features.shape[-1]}"
+            )
         if base_pred.dim() == 1:
             base_pred = base_pred.unsqueeze(1)
+
         x_in = torch.cat([x_features, base_pred], dim=1)
         residual = self.residual_net(x_in)
         return base_pred + self.config.residual_weight * residual
@@ -219,60 +187,54 @@ class HybridEnsemble(nn.Module):
     @torch.no_grad()
     def predict_numpy(
         self,
-        x_features_np : np.ndarray,
-        base_pred_np  : np.ndarray,
-        device        : Optional[torch.device] = None,
+        x_features_np: np.ndarray,
+        base_pred_np: np.ndarray,
+        device: Optional[torch.device] = None,
+        batch_size: int = 16384,
     ) -> np.ndarray:
         """
-        Convenience method: accepts numpy arrays, returns numpy array.
-
-        Args
-        ----
-        x_features_np : (N, 53) float32 numpy array.
-        base_pred_np  : (N,) or (N, 1) float32 numpy array.
-        device        : torch.device (auto-detected if None).
-
-        Returns
-        -------
-        corrected_preds : (N,) numpy array of corrected predictions.
+        Execute inference on numpy arrays with batched execution for memory safety.
         """
         if device is None:
-            device = next(self.residual_net.parameters()).device
+            device = next(self.parameters()).device
 
         self.eval()
-        x_t = torch.from_numpy(x_features_np.astype(np.float32)).to(device)
-        b_t = torch.from_numpy(base_pred_np.astype(np.float32)).to(device)
-        if b_t.dim() == 1:
-            b_t = b_t.unsqueeze(1)
+        n_samples = len(x_features_np)
+        if len(base_pred_np) != n_samples:
+            raise ValueError(
+                f"Row mismatch between features ({n_samples}) and base_pred ({len(base_pred_np)})"
+            )
 
-        preds = self.forward(x_t, b_t)
-        return preds.cpu().numpy().flatten()
+        if n_samples <= batch_size:
+            x_t = torch.from_numpy(np.asarray(x_features_np, dtype=np.float32)).to(device)
+            b_t = torch.from_numpy(np.asarray(base_pred_np, dtype=np.float32)).to(device)
+            out = self.forward(x_t, b_t)
+            return out.cpu().numpy().flatten()
 
+        all_preds: List[np.ndarray] = []
+        for i in range(0, n_samples, batch_size):
+            end_idx = min(i + batch_size, n_samples)
+            x_batch = torch.from_numpy(
+                np.asarray(x_features_np[i:end_idx], dtype=np.float32)
+            ).to(device)
+            b_batch = torch.from_numpy(
+                np.asarray(base_pred_np[i:end_idx], dtype=np.float32)
+            ).to(device)
+            out_batch = self.forward(x_batch, b_batch)
+            all_preds.append(out_batch.cpu().numpy().flatten())
 
-# ══════════════════════════════════════════════════════════════════════════════
-# WeightedEnsemble — simple linear combination of three base models
-# ══════════════════════════════════════════════════════════════════════════════
+        return np.concatenate(all_preds)
+
 
 class WeightedEnsemble:
     """
-    Simple weighted average of RF, XGBoost, and base MLP predictions.
-
-    Not an nn.Module — purely numpy-based inference.
-
-    Parameters
-    ----------
-    rf_weight  : float — weight for Random Forest predictions.
-    xgb_weight : float — weight for XGBoost predictions.
-    mlp_weight : float — weight for base MLP predictions.
-
-    Raises
-    ------
-    ValueError : if the three weights do not sum to 1.0 within tolerance 1e-5.
+    Computes a weighted average of Random Forest, XGBoost, and MLP predictions:
+        y_ens = w_rf * y_rf + w_xgb * y_xgb + w_mlp * y_mlp
     """
 
     def __init__(
         self,
-        rf_weight : float = 0.4,
+        rf_weight: float = 0.4,
         xgb_weight: float = 0.4,
         mlp_weight: float = 0.2,
     ):
@@ -280,57 +242,49 @@ class WeightedEnsemble:
         if abs(total - 1.0) > 1e-5:
             raise ValueError(
                 f"WeightedEnsemble weights must sum to 1.0, got {total:.6f} "
-                f"(rf={rf_weight}, xgb={xgb_weight}, mlp={mlp_weight}). "
-                f"Adjust weights so they sum to exactly 1."
+                f"(rf={rf_weight}, xgb={xgb_weight}, mlp={mlp_weight})"
             )
-        self.rf_weight  = rf_weight
+        self.rf_weight = rf_weight
         self.xgb_weight = xgb_weight
         self.mlp_weight = mlp_weight
 
     def predict(
         self,
-        rf_preds : np.ndarray,
+        rf_preds: np.ndarray,
         xgb_preds: np.ndarray,
         mlp_preds: np.ndarray,
     ) -> np.ndarray:
-        """
-        Compute weighted average of three prediction arrays.
+        """Compute weighted linear combination of three predictions."""
+        rf_p = np.asarray(rf_preds, dtype=np.float64).flatten()
+        xgb_p = np.asarray(xgb_preds, dtype=np.float64).flatten()
+        mlp_p = np.asarray(mlp_preds, dtype=np.float64).flatten()
 
-        Args
-        ----
-        rf_preds  : (N,) Random Forest predictions.
-        xgb_preds : (N,) XGBoost predictions.
-        mlp_preds : (N,) base MLP predictions.
-
-        Returns
-        -------
-        (N,) weighted ensemble predictions.
-        """
-        rf_preds  = np.asarray(rf_preds,  dtype=np.float64).flatten()
-        xgb_preds = np.asarray(xgb_preds, dtype=np.float64).flatten()
-        mlp_preds = np.asarray(mlp_preds, dtype=np.float64).flatten()
+        if not (len(rf_p) == len(xgb_p) == len(mlp_p)):
+            raise ValueError(
+                f"Length mismatch: rf={len(rf_p)}, xgb={len(xgb_p)}, mlp={len(mlp_p)}"
+            )
 
         return (
-            self.rf_weight  * rf_preds
-            + self.xgb_weight * xgb_preds
-            + self.mlp_weight * mlp_preds
+            self.rf_weight * rf_p
+            + self.xgb_weight * xgb_p
+            + self.mlp_weight * mlp_p
         )
 
     def to_dict(self) -> Dict[str, float]:
-        """Serialize weights to plain dict."""
+        """Serialize weights to dict."""
         return {
-            'rf_weight' : self.rf_weight,
+            'rf_weight': self.rf_weight,
             'xgb_weight': self.xgb_weight,
             'mlp_weight': self.mlp_weight,
         }
 
     @classmethod
     def from_dict(cls, d: Dict[str, float]) -> 'WeightedEnsemble':
-        """Reconstruct WeightedEnsemble from a dict."""
+        """Reconstruct from dict."""
         return cls(
-            rf_weight  = d['rf_weight'],
-            xgb_weight = d['xgb_weight'],
-            mlp_weight = d['mlp_weight'],
+            rf_weight=d['rf_weight'],
+            xgb_weight=d['xgb_weight'],
+            mlp_weight=d['mlp_weight'],
         )
 
     def __repr__(self) -> str:
@@ -340,66 +294,56 @@ class WeightedEnsemble:
         )
 
 
-# ══════════════════════════════════════════════════════════════════════════════
-# Checkpoint Utilities
-# ══════════════════════════════════════════════════════════════════════════════
-
 def save_hybrid_checkpoint(
-    model   : nn.Module,
-    config  : HybridConfig,
-    path    : Path,
+    model: nn.Module,
+    config: HybridConfig,
+    path: Union[str, Path],
     metadata: Optional[Dict[str, Any]] = None,
 ) -> None:
     """
-    Save a HybridEnsemble or ResidualMLPNet checkpoint with embedded config.
-
-    Args
-    ----
-    model    : Trained nn.Module (HybridEnsemble or ResidualMLPNet).
-    config   : HybridConfig used to construct the model.
-    path     : Destination .pt file path.
-    metadata : Optional extra metadata dict (e.g. val_mae, best_epoch).
+    Save HybridEnsemble or ResidualMLPNet checkpoint with embedded config and metadata.
     """
     path = Path(path)
     path.parent.mkdir(parents=True, exist_ok=True)
 
     payload: Dict[str, Any] = {
         'model_state_dict': model.state_dict(),
-        'hybrid_config'   : config.to_dict(),
-        'pytorch_version' : torch.__version__,
-        'seed'            : SEED,
+        'hybrid_config': config.to_dict(),
+        'pytorch_version': torch.__version__,
+        'seed': SEED,
     }
     if metadata:
         payload.update(metadata)
 
     torch.save(payload, path)
-    print(f'✓ Hybrid checkpoint saved → {path}')
+    print(f"✓ Hybrid checkpoint saved → {path}")
 
 
 def load_hybrid_checkpoint(
-    path  : Path,
+    path: Union[str, Path],
     device: Optional[torch.device] = None,
 ) -> Tuple[HybridEnsemble, HybridConfig, Dict[str, Any]]:
     """
-    Load a HybridEnsemble model from a checkpoint.
-
-    Args
-    ----
-    path   : Path to .pt checkpoint file.
-    device : Target device (auto-detected if None).
-
-    Returns
-    -------
-    (model, config, checkpoint_dict)
+    Load a HybridEnsemble from a checkpoint file.
+    Supports checkpoints saved directly from ResidualMLPNet or HybridEnsemble.
     """
     if device is None:
         device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-    ckpt   = torch.load(path, map_location=device, weights_only=False)
-    config = HybridConfig.from_dict(ckpt['hybrid_config'])
-    model  = HybridEnsemble(config).to(device)
-    model.load_state_dict(ckpt['model_state_dict'])
-    model.eval()
+    path = Path(path)
+    if not path.exists():
+        raise FileNotFoundError(f"Checkpoint file not found: {path}")
 
-    print(f'✓ Hybrid checkpoint loaded from {path}')
+    ckpt = torch.load(path, map_location=device, weights_only=False)
+    config = HybridConfig.from_dict(ckpt.get('hybrid_config', HybridConfig().to_dict()))
+    model = HybridEnsemble(config).to(device)
+
+    state_dict = ckpt['model_state_dict']
+    if any(k.startswith('residual_net.') for k in state_dict.keys()):
+        model.load_state_dict(state_dict)
+    else:
+        model.residual_net.load_state_dict(state_dict)
+
+    model.eval()
+    print(f"✓ Hybrid checkpoint loaded from {path}")
     return model, config, ckpt

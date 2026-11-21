@@ -9,6 +9,10 @@ Run with:
 
 from __future__ import annotations
 
+import os
+os.environ["OMP_NUM_THREADS"] = "1"
+os.environ["KMP_DUPLICATE_LIB_OK"] = "TRUE"
+
 import sys
 import tempfile
 from pathlib import Path
@@ -276,3 +280,92 @@ def test_save_load_hybrid_checkpoint():
         preds_loaded = loaded_model.predict_numpy(X_np, base_np, device=torch.device('cpu'))
 
     np.testing.assert_allclose(preds_orig, preds_loaded, rtol=1e-5, atol=1e-5)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# 10. Integration Contract Tests: 38-feature Tree vs 53-feature DL
+# ══════════════════════════════════════════════════════════════════════════════
+
+def test_phase1_tree_models_require_38_features():
+    """Verify that actual serialized Phase 1 tree models expect exactly 38 features."""
+    from Phase_1_Machine_Learning.src.models import load_tree_model
+    from Phase_2_Deep_Learning.src.dataset import get_default_paths
+
+    paths = get_default_paths()
+    p1_models = paths['phase1_dir'] / 'data' / 'GeneratedOutput' / '03.ModelTraining'
+    rf_path = p1_models / 'random_forest_model.joblib'
+    xgb_path = p1_models / 'xgboost_model.json'
+
+    if not rf_path.exists() or not xgb_path.exists():
+        pytest.skip("Phase 1 model artifacts not found; skipping integration contract test.")
+
+    rf = load_tree_model(str(rf_path), model_type='rf')
+    xgb = load_tree_model(str(xgb_path), model_type='xgb')
+
+    assert getattr(rf, 'n_features_in_', None) == 38
+    assert getattr(xgb, 'n_features_in_', None) == 38
+
+    # 38-feature prediction must succeed
+    x_38 = np.ones((5, 38), dtype=np.float32)
+    rf_out = rf.predict(x_38)
+    xgb_out = xgb.predict(x_38)
+    assert len(rf_out) == 5
+    assert len(xgb_out) == 5
+
+    # Passing 53-feature DL matrix to RF MUST raise an error
+    x_53 = np.ones((5, 53), dtype=np.float32)
+    with pytest.raises(ValueError):
+        rf.predict(x_53)
+
+
+def test_residual_mlp_requires_54_features():
+    """Verify that ResidualMLPNet requires exactly 54 inputs (53 features + 1 base pred)."""
+    cfg = HybridConfig(input_dim=53)
+    net = ResidualMLPNet(cfg)
+    net.eval()
+
+    # Valid 54-dim input succeeds
+    valid_x = torch.randn(4, 54)
+    with torch.no_grad():
+        out = net(valid_x)
+    assert out.shape == (4, 1)
+
+    # 53-dim or 38-dim input must raise ValueError
+    with pytest.raises(ValueError, match="dimension mismatch"):
+        net(torch.randn(4, 53))
+
+    with pytest.raises(ValueError, match="dimension mismatch"):
+        net(torch.randn(4, 38))
+
+
+def test_hybrid_ensemble_batched_predict():
+    """Verify that HybridEnsemble.predict_numpy handles batched inference without error."""
+    cfg = HybridConfig(input_dim=53)
+    model = HybridEnsemble(cfg)
+    model.eval()
+
+    n_samples = 500
+    x_features = np.random.randn(n_samples, 53).astype(np.float32)
+    base_pred = np.random.uniform(40, 100, size=n_samples).astype(np.float32)
+
+    # Test with batch_size smaller than total samples
+    preds = model.predict_numpy(x_features, base_pred, batch_size=128)
+    assert len(preds) == n_samples
+    assert not np.isnan(preds).any()
+    assert not np.isinf(preds).any()
+
+
+def test_oof_assertions_prevent_leakage_and_alignment():
+    """Verify that generate_oof_predictions validates alignment and rejects NaNs."""
+    X = np.ones((20, 38), dtype=np.float32)
+    y = np.ones(20, dtype=np.float64)
+
+    # Row mismatch should raise ValueError
+    with pytest.raises(ValueError, match="Row count mismatch"):
+        generate_oof_predictions(X[:10], y, model_type='rf', n_splits=2)
+
+    # NaN in inputs should raise ValueError
+    X_nan = X.copy()
+    X_nan[0, 0] = np.nan
+    with pytest.raises(ValueError, match="NaN"):
+        generate_oof_predictions(X_nan, y, model_type='rf', n_splits=2)
