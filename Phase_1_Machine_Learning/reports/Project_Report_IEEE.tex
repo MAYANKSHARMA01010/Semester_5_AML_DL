@@ -130,7 +130,7 @@ orthophosphate~\cite{tyree2019surface}.
 To synthesise multi-dimensional telemetry into actionable policy
 directives, regulatory agencies rely on composite indicators,
 prominently the Canadian Council of Ministers of the Environment Water
-Quality Index (\textbf{CCME~WQI}). Despite its
+Quality Index (\textbf{CCME~WQI})~\cite{ccme2001wqi}. Despite its
 diagnostic utility, computing the CCME~WQI requires synchronous
 multi-variable laboratory testing; assays such as $\text{BOD}_5$
 mandate five days of microbiological incubation, precluding real-time
@@ -169,12 +169,12 @@ Project~18. Our contributions include:
 
 Early computational water quality modelling relied on process-based
 differential systems, such as the classical Streeter--Phelps oxygen sag
-equations. While physically consistent, these
+equations~\cite{streeter1925study}. While physically consistent, these
 numerical models require expensive bathymetric calibrations and fail to
 generalise across diverse hydrological basins.
 
 With the proliferation of automated telemetry, data-driven approaches
-emerged. Breiman introduced Random Forests (RF),
+emerged. Breiman introduced Random Forests (RF)~\cite{breiman2001random},
 demonstrating that aggregating randomised decision trees drastically
 reduces variance while resisting tabular noise. Chen and Guestrin
 developed XGBoost~\cite{chen2016xgboost}, utilising second-order
@@ -183,7 +183,7 @@ functions to achieve state-of-the-art accuracy on structured
 environmental datasets.
 
 Lundberg and Lee unified cooperative game theory and tree ensembles
-through SHAP and TreeSHAP,
+through SHAP~\cite{lundberg2017unified} and TreeSHAP~\cite{lundberg2020from},
 enabling exact polynomial-time computation of Shapley values. Published
 water quality literature often derives index targets directly from raw
 features without preventing circular mathematical leakage, or overlooks
@@ -449,7 +449,7 @@ interpretability, we engineered 38~predictors across seven categories
 \subsection{Geochemical \& Stoichiometric Formulations}
 
 \noindent\textbf{1.\ Dissolved Oxygen Saturation \& Deficit.}
-Following the Benson--Krause formulation:
+Following the Benson--Krause formulation~\cite{benson1984concentration}:
 \begin{equation}
   \text{DO}_{\text{sat}} =
     14.652 - 0.41022\,T + 0.007991\,T^2 - 0.00007777\,T^3
@@ -461,7 +461,7 @@ Following the Benson--Krause formulation:
 \end{equation}
 
 \noindent\textbf{2.\ Redfield Stoichiometric Ratio.}
-Redfield's stoichiometric ratio identifies nutrient
+Redfield's stoichiometric ratio~\cite{redfield1934proportions} identifies nutrient
 limitation:
 \begin{equation}
   \text{N:P Ratio} =
@@ -469,7 +469,7 @@ limitation:
 \end{equation}
 
 \noindent\textbf{3.\ Toxic Un-Ionized Ammonia.}
-Governed by temperature and pH:
+Following Emerson et al.~\cite{emerson1975aqueous}, governed by temperature and pH:
 \begin{equation}
   f_{\text{toxic}} =
     \frac{1}{10^{\left(0.09018 + \frac{2729.92}{T+273.15} - \text{pH}\right)} + 1}
