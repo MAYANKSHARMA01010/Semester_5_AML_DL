@@ -6,9 +6,9 @@
 > **Repository:** [Semester_5_AML_DL](https://github.com/MAYANKSHARMA01010/Semester_5_AML_DL)  
 > **Evaluated Test Partition:** 422,943 independent observations (1964–2023 across 5 nations)  
 > **Primary Deliverable Files:**
-> - Executable Notebook: [notebooks/06_explainability_error_analysis.ipynb](notebooks/06_explainability_error_analysis.ipynb)
-> - Technical Report: [reports/TASK_6_EXPLAINABILITY_REPORT.md](reports/TASK_6_EXPLAINABILITY_REPORT.md)
-> - Generated Output Artifacts Directory: [reports/task_6_outputs/](reports/task_6_outputs/)
+> - Executable Notebook: [../notebooks/06_explainability_error_analysis.ipynb](../notebooks/06_explainability_error_analysis.ipynb)
+> - Technical Report: [TASK_6_EXPLAINABILITY_REPORT.md](TASK_6_EXPLAINABILITY_REPORT.md)
+> - Generated Output Artifacts Directory: [task_6_outputs/](task_6_outputs/)
 
 ---
 

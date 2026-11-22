@@ -1,26 +1,83 @@
 # Water Quality Prediction via Gradient Boosting and Deep Neural Networks
 
 > **Course:** Semester 5 Applied Machine Learning & Deep Learning (CSAI)  
+> **Institution:** Department of Computer Science & Artificial Intelligence, Newton School of Technology, Rishihood University  
 > **Master Dataset:** 2,819,617 clean complete-case telemetry observations across 5 nations (1940–2023)  
 > **Target Continuous Index:** Canadian Council of Ministers of the Environment Water Quality Index (**CCME WQI**, $y \in [0, 100]$)  
 > **Repository:** [MAYANKSHARMA01010/Semester_5_AML_DL](https://github.com/MAYANKSHARMA01010/Semester_5_AML_DL)  
-> **Test Set Evaluation Partition:** 422,943 held-out test observations  
+> **Held-Out Test Set:** 422,943 observations (Strict Zero-Leakage Quarantine)  
 
 ---
 
-## 1. Project Overview & Problem Statement
+## Project Overview
 
-Freshwater ecosystems face severe ecological degradation from anthropogenic nutrient pollution, agricultural runoff, industrial discharge, and urban effluent. Effective water resource management requires continuous, accurate quantification of overall water quality from physical and chemical sensor telemetry.
+Freshwater ecosystems face severe ecological pressures from municipal discharges, agricultural runoff, industrial effluents, and urban stormwater. Continuous, real-time assessment of water quality is critical for environmental protection and public safety.
 
-Traditional laboratory assessments relying on the Canadian Council of Ministers of the Environment Water Quality Index (CCME WQI) require manual multi-parameter aggregation and non-linear formula evaluation. This project develops a unified machine learning and deep learning framework to predict continuous CCME Water Quality Index values directly from multi-sensor telemetry, comparing tree ensembles, deep neural networks, and multi-paradigm residual hybrids across 2.82 million observations.
+Conventional laboratory testing and manual index evaluations, such as the Canadian Council of Ministers of the Environment Water Quality Index (**CCME WQI**), involve multi-day incubation delays (e.g., 5-day Biochemical Oxygen Demand, $\text{BOD}_5$) and complex non-linear mathematical formulas. 
+
+This project establishes a unified, multi-paradigm machine learning and deep learning framework to predict continuous CCME WQI values directly from physical and chemical sensor telemetry. Spanning **2.82 million international observations**, the research benchmarks tree ensembles, deep neural networks, and additive residual hybrid architectures to evaluate accuracy, inference latency, outlier robustness, and feature attribution.
 
 ---
 
-## 2. Dataset Source & Description
+## Project Team & Responsibilities
 
-The experimental corpus spans 83 years of environmental monitoring (1940–2023) aggregated across five nations:
+**Newton School of Technology, Rishihood University**
 
-| Country | Clean Observations | Proportion | Source Sensor Network |
+| Team Member | Phase 1 Focus | Phase 2 Technical Work Packages |
+| :--- | :--- | :--- |
+| **Aman Soni** | Model Training & Baselines | **Tasks 1 & 6:** DL Data Preparation, Feature Engineering, Explainability & Prediction Error Diagnostics |
+| **Mayank Sharma** | Pipeline Orchestration & EDA | **Task 2:** MLP Architecture Development (PyTorch, Funnel Topology, Regularization) |
+| **Chaitanya Kumar** | Feature Engineering & Stoichiometry | **Task 3:** MLP Training & Optimization (Losses, Learning Rate Schedules, Early Stopping) |
+| **Ankit Kumar Pandey** | Validation & Stratification | **Task 4:** Hybrid ML + DL Model Development (5-Fold OOF Residuals, ResidualMLPNet) |
+| **Aaryan Gera** | Preprocessing & Chemical Bounds | **Task 5:** Model Evaluation & Ablation Studies (6-Model Benchmarking, 7-Group Ablation, Latency) |
+| **Pranav Sehgal** | Regulatory Documentation | Technical Literature Review, CCME Mathematical Derivation & Presentation Coordination |
+
+---
+
+## Quick Navigation to Deliverables
+
+### Reports & Documentation
+- **Final Master Project Report (10-Page IEEE Paper):** [Final_Report/Final_Project_Report.pdf](Final_Report/Final_Project_Report.pdf)
+- **Phase 1 Machine Learning Report (IEEE Format):** [Phase_1_Machine_Learning/Final/Project_Report_LaTeX_IEEE_Final.pdf](Phase_1_Machine_Learning/Final/Project_Report_LaTeX_IEEE_Final.pdf)
+- **Phase 2 Deep Learning Report (IEEE Format):** [Phase_2_Deep_Learning/reports/Phase_2_Report.pdf](Phase_2_Deep_Learning/reports/Phase_2_Report.pdf)
+- **Phase 1 Technical Specification:** [Phase_1_Machine_Learning/docs/PREPROCESSING_SPECIFICATION.md](Phase_1_Machine_Learning/docs/PREPROCESSING_SPECIFICATION.md)
+- **Phase 1 Exploratory Data Analysis Report:** [Phase_1_Machine_Learning/docs/EDA_REPORT.md](Phase_1_Machine_Learning/docs/EDA_REPORT.md)
+- **Task 5 Evaluation Technical Report:** [Phase_2_Deep_Learning/reports/TASK_5_EVALUATION_REPORT.md](Phase_2_Deep_Learning/reports/TASK_5_EVALUATION_REPORT.md)
+- **Task 6 Explainability Technical Report:** [Phase_2_Deep_Learning/reports/TASK_6_EXPLAINABILITY_REPORT.md](Phase_2_Deep_Learning/reports/TASK_6_EXPLAINABILITY_REPORT.md)
+
+### Presentations
+- **Final Phase 2 PowerPoint Presentation:** [Final_Report/Phase2_Presentation.pptx](Final_Report/Phase2_Presentation.pptx)
+- **Phase 1 PowerPoint Presentation:** [Phase_1_Machine_Learning/Final/Project_Presentation_Final.pptx](Phase_1_Machine_Learning/Final/Project_Presentation_Final.pptx)
+
+### Visualizations Catalog
+- **Centralized Figures Index (38 Visualizations):** [Final_Visualizations/README.md](Final_Visualizations/README.md)
+
+---
+
+## Phase Breakdown
+
+### Phase 1: Machine Learning & Feature Engineering
+Phase 1 establishes the geochemical, statistical, and classical machine learning foundation:
+- **Data Ingestion & Physical Screening:** Audited 2,827,977 raw records across 5 nations (1940–2023). Filtered 8,360 unphysical readings using thermodynamic bounds (pH $0–14$, DO $0–30\text{ mg/L}$, water temperature $0–45^{\circ}\text{C}$), leaving 2,819,617 clean complete-case observations.
+- **Biochemical Feature Engineering:** Engineered 38 tabular features including Benson-Krause Dissolved Oxygen saturation equations, Redfield stoichiometric $\text{N}:\text{P}$ ratios, Emerson unionized toxic ammonia ($\text{NH}_3$), $\log(1+x)$ variance-stabilizing transformations on skewed nutrients, historical chronological station lags, and guideline exceedance counters.
+- **Tree-Based Benchmarks:** Evaluated Empirical Mean Baseline, Random Forest (100 estimators), and XGBoost (150 estimators, histogram-based split finding).
+- **Interpretability:** Applied TreeSHAP game-theoretic attribution to quantify parameter sensitivity.
+
+### Phase 2: Deep Learning, Residual Hybrid & Diagnostics
+Phase 2 explores tabular deep learning, hybrid architectures, and axiomatic attribution:
+- **Task 1 — DL Data Pipeline:** Implemented PyTorch `Dataset` and `DataLoader` pipelines with 53-dimensional inputs (36 standardized continuous features + 17 one-hot categorical indicators).
+- **Task 2 — MLP Architecture:** Developed `WaterQualityMLP` using a funnel topology ($53 \to 256 \to 128 \to 64 \to 32 \to 1$) with `BatchNorm1d`, `Dropout(0.2)`, and ReLU activations.
+- **Task 3 — Training & Optimization:** Optimized using AdamW, Smooth L1 and MSE losses, Cosine Annealing learning rate schedules, and early stopping.
+- **Task 4 — Residual Hybrid Architecture:** Coupled an unweighted Base Tree Ensemble ($0.5\text{RF} + 0.5\text{XGB}$) with a 54-dimensional `ResidualMLPNet` trained on 5-fold out-of-fold (OOF) residuals using Smooth L1 loss ($\hat{y}_{\text{hybrid}} = \hat{y}_{\text{base}} + \hat{r}$).
+- **Task 5 — Evaluation & Ablation Studies:** Conducted uniform test-set benchmarking across all 6 architectures and executed a systematic 7-group ablation study.
+- **Task 6 — Explainability & Prediction Error Diagnostics:** Applied Integrated Gradients ($N=1,000$ test observations, $m=50$ integration steps) from a modal observed baseline ($F(x') = 86.7233$ WQI units) and conducted residual error diagnostics ($\text{Residual} = \hat{y} - y$).
+
+---
+
+## Dataset Overview & Target Formulation
+
+### Data Provenance
+| Country | Clean Records | Share | Authoritative Source |
 | :--- | :---: | :---: | :--- |
 | **England** | 2,361,042 | 83.74% | UK Environment Agency Water Quality Archive (`data.gov.uk`) |
 | **USA** | 239,890 | 8.51% | USGS National Water Information System (NWIS) + US EPA WQP |
@@ -29,186 +86,152 @@ The experimental corpus spans 83 years of environmental monitoring (1940–2023)
 | **Canada** | 5,720 | 0.20% | Historical Reference Telemetry Basins |
 | **Total** | **2,819,617** | **100.00%** | **Multi-National Water Quality Monitoring Corpus** |
 
-### Data Partitions
-- **Training Set (70%):** 1,973,730 observations (transparently sharded into 3 sub-parts under 60 MB each for GitHub compatibility).
+### Data Partitions (Strict Temporal & Stratified Quarantine)
+- **Training Set (70%):** 1,973,730 observations.
 - **Validation Set (15%):** 422,944 observations.
 - **Held-Out Test Set (15%):** 422,943 observations.
 
----
-
-## 3. Target Definition: CCME Water Quality Index
-
-The target variable is the continuous CCME WQI score ($y \in [0, 100]$), representing overall aquatic health based on Canadian regulatory guidelines:
+### Target Formulation: CCME Water Quality Index
+The target $y \in [0, 100]$ is computed deterministically from water telemetry guidelines:
 
 $$WQI = 100 - \frac{\sqrt{F_1^2 + F_2^2 + F_3^2}}{1.732}$$
 
-Where:
-- $F_1$ (**Scope**): Percentage of chemical parameters exceeding regulatory safety thresholds.
-- $F_2$ (**Frequency**): Percentage of individual analytical tests failing compliance standards.
-- $F_3$ (**Amplitude**): Normalized extent to which failed measurements deviate from guidelines.
+- $F_1$ (**Scope**): Percentage of variables exceeding water quality guidelines.
+- $F_2$ (**Frequency**): Percentage of individual tests that fail to meet guidelines.
+- $F_3$ (**Amplitude**): Normalized deviation of failed values from guideline thresholds.
 
-WQI values correspond to standard environmental health classifications:
-- **Excellent** ($95–100$): Pristine, near-natural aquatic conditions.
-- **Good** ($80–94$): Minor degree of impairment; ecosystem protected.
-- **Fair** ($65–79$): Frequently impaired conditions; parameters exceed guidelines.
-- **Marginal** ($45–64$): Substantial aquatic stress; biological life degraded.
-- **Poor** ($0–44$): Severely contaminated; ecosystem integrity threatened.
+Quality tiers: **Excellent** ($95–100$), **Good** ($80–94$), **Fair** ($65–79$), **Marginal** ($45–64$), and **Poor** ($0–44$).
 
 ---
 
-## 4. Feature Space & Input Representation
+## Benchmark Performance Comparison
 
-### 38 Tabular Features (Tree Ensembles)
-1. **Base Physical & Chemical Sensors (8):** `ph`, `temperature_c`, `do_mg_l`, `bod_mg_l`, `ammonia_mg_l`, `orthophosphate_mg_l`, `nitrogen_mg_l`, `nitrate_mg_l`.
-2. **Aquatic Stoichiometry & Thermodynamics (7):** Redfield stoichiometric $\text{N}:\text{P}$ ratio, Benson-Krause theoretical dissolved oxygen saturation %, Streeter-Phelps oxygen deficit, Emerson un-ionized toxic ammonia ($\text{NH}_3$).
-3. **Log-Transformed Variance-Stabilized Features (7):** $\log(1+x)$ transformations on highly skewed nutrient parameters (orthophosphate skewness reduced from $\gamma_1 > 40$ to near-normal).
-4. **Historical Temporal Lags (6):** Chronological shift-1 station lags and rolling-3 statistics with strict zero-lookahead prevention.
-5. **Regulatory Stress Counter (1):** `exceedance_counter` tracking cumulative guideline threshold violations.
-6. **Contextual & Categorical Identifiers (2):** `country_code` (integer-encoded jurisdiction) and `waterbody_type_code` (integer-encoded habitat: River, Lake, Canal, Estuary, etc.).
-7. **Temporal & Cyclical Features (7):** Calendar year, month, season, and harmonic sinusoidal projections (`month_sin`, `month_cos`).
-
-### 53 Deep Learning Features (MLP)
-- 36 continuous features scaled using scikit-learn `StandardScaler` fitted strictly on training data.
-- 17 binary indicators from One-Hot Encoding of `country_code` (5 categories) and `waterbody_type_code` (12 categories).
-
----
-
-## 5. Model Architectures & Methodologies
-
-### Phase 1: Machine Learning Baselines
-- **Mean Baseline Regressor:** Predicts the constant training mean ($\bar{y} \approx 86.72$, $\text{MAE} = 14.130$).
-- **Random Forest Regressor:** Bagging ensemble of 30 trees (`max_depth=14`, `min_samples_leaf=5`, `max_features=1.0`). Captures dense regional feature distributions.
-- **XGBoost Regressor:** Gradient boosted decision trees (150 estimators, `learning_rate=0.08`, `max_depth=6`, histogram-based split finding). High throughput ($4.6\text{ ms}$ latency).
-
-### Phase 2: Deep Learning Neural Network
-- **WaterQualityMLP:** Deep multi-layer perceptron with funnel topology `53 → 512 → 256 → 128 → 64 → 1`. Incorporates Batch Normalization, Dropout ($p = 0.3$), ReLU activations, and Kaiming He normal weight initialization. Trained with AdamW optimizer ($\text{lr}=10^{-3}$, $\text{weight\_decay}=10^{-4}$) under MSE loss.
-
-### Phase 2: Hybrid ML + DL Architecture
-The **Residual Hybrid** architecture combines the strengths of tree ensembles and deep neural networks:
-
-$$\hat{y}_{\text{hybrid}} = \hat{y}_{\text{base\_tree}} + \hat{r}$$
-
-1. **Base Tree Ensemble ($\hat{y}_{\text{base\_tree}}$):** Equal-weighted average of Random Forest and XGBoost ($0.5\times\text{RF} + 0.5\times\text{XGB}$).
-2. **Residual Neural Network (`ResidualMLPNet`):** Takes **54 inputs** (53 DL features + 1 base tree prediction scalar) and predicts the signed residual error ($\hat{r} \approx y - \hat{y}_{\text{base}}$).
-3. **Topology:** `54 → 256 → 128 → 64 → 1` with BatchNorm1d, Dropout ($p=0.2$), trained for 50 epochs on leakage-free 5-fold Out-of-Fold (OOF) residuals using Smooth L1 (Huber) loss.
-
----
-
-## 6. Comprehensive Test Set Performance Comparison
-
-All models were evaluated on the exact same held-out test split (`test.parquet`, $N = 422,943$ records):
+All models were evaluated on the identical held-out test split ($N = 422,943$ records):
 
 | Model Architecture | Paradigm | Input Dimension | MAE | RMSE | $R^2$ | MedAE | MaxAE |
 | :--- | :--- | :---: | :---: | :---: | :---: | :---: | :---: |
 | **Random Forest** | Bagging Trees | 38 Tabular | **0.0514** | 0.2016 | 0.999870 | **0.0042** | 12.6128 |
 | **Residual Hybrid** | Tree + Residual MLP | 38 Tab + 53 DL | 0.0710 | **0.1678** | **0.999910** | 0.0229 | **5.6842** |
-| **Base Tree Ensemble** | Equal-Weighted Trees | 38 Tabular | 0.0900 | 0.2464 | 0.999805 | 0.0261 | 8.7128 |
-| **XGBoost** | Gradient Boosting | 38 Tabular | 0.1614 | 0.4364 | 0.999389 | 0.0480 | 9.2769 |
+| **Base Tree Ensemble** | Equal-Weighted Trees ($0.5\text{RF}+0.5\text{XGB}$) | 38 Tabular | 0.0900 | 0.2464 | 0.999805 | 0.0261 | 8.7128 |
+| **XGBoost Regressor** | Gradient Boosted Trees | 38 Tabular | 0.1614 | 0.4364 | 0.999389 | 0.0480 | 9.2769 |
 | **Weighted Ensemble** | Convex Blend ($0.4\text{RF}+0.4\text{XGB}+0.2\text{MLP}$) | 38 Tab + 53 DL | 0.3096 | 0.4155 | 0.999446 | 0.2653 | 8.8283 |
 | **WaterQualityMLP** | Standalone Deep Net | 53 (36 num + 17 OHE) | 1.3800 | 1.6720 | 0.991029 | 1.2893 | 31.1327 |
 
-### Core Empirical Findings:
-1. **Outlier Compression:** The Residual Hybrid cuts the maximum peak prediction error by **54.9%** (from $12.6128$ in Random Forest down to **$5.6842$**), eliminating severe step-function boundary errors in extreme pollutant regimes.
-2. **Lowest Global Variance:** Residual Hybrid achieves the lowest RMSE across all evaluated models (**$0.1678$**, a **31.9% variance reduction** over the Base Tree Ensemble).
-3. **Tabular Boundary Dynamics:** Standalone Random Forest achieves the lowest median absolute deviation across the dense central distribution ($\text{MAE}=0.0514$), while the Residual Hybrid dominates on distribution tails and high-error samples.
+### Key Empirical Findings:
+1. **Outlier Compression:** The Residual Hybrid compresses peak prediction error by **$54.9\%$** ($12.6128 \to 5.6842$), eliminating severe step-boundary errors produced by tree ensembles.
+2. **Lowest Global Variance:** Residual Hybrid achieves the lowest overall RMSE (**$0.1678$**, representing a **$31.9\%$ variance reduction** over the Base Tree Ensemble).
+3. **Tabular Boundary Dynamics:** Random Forest demonstrates superior precision across the dense central distribution ($\text{MAE} = 0.0514$), whereas the Residual Hybrid dominates on distribution tails and severe outlier cases.
+4. **Divergent Ablation Sensitivities:** Ablation experiments reveal that tree ensembles degrade catastrophically when raw sensor telemetry is removed ($\Delta\text{MAE} = +21.65$), while neural networks collapse when $\log(1+x)$ variance stabilization is omitted ($\Delta\text{MAE} = +12.16$, $\Delta R^2 = -0.8511$).
 
 ---
 
-## 7. Model Explainability & Prediction Error Analysis
-
-### Integrated Gradients Feature Attributions
-Using path-integral Integrated Gradients with a valid modal observed reference baseline (clean river water in England, $F(x') = 86.7233$ WQI units) across $N = 1{,}000$ test samples ($m=50$ steps, mean completeness error $< 0.26$ WQI units):
-- **Primary Negative Attributions (Pollutants):** `log1p_orthophosphate` (mean absolute attribution $2.9554$), `log1p_nitrogen` ($2.2359$), `log1p_np_ratio` ($1.8906$), and `log1p_ammonia` ($1.2046$) strongly suppress predicted WQI.
-- **Primary Positive Attributions:** Dissolved oxygen saturation and low exceedance counters promote elevated water quality.
-- **Secondary Contextual Drivers:** Waterbody habitat type ($1.0425$) and country code ($0.6698$) provide contextual regional calibration.
-
-### Prediction Error Diagnostics ($\text{Residual} = \hat{y} - y$)
-- **Zero-Bias Centering:** Residual distributions across tree models and the hybrid model exhibit near-zero mean residuals ($+0.0005$ to $+0.0055$ WQI units).
-- **Subgroup Vulnerabilities:** The highest error rates occur in heavily polluted industrial effluent channels and transitional estuarine waters due to unobserved localized contaminants.
-
----
-
-## 8. Repository Layout
+## Repository Structure
 
 ```text
 Semester_5_AML_DL/
-├── Final_Visualizations/                      # Centralized directory for report and PPT figures
+├── Final_Report/                              # Master research report and presentation
+│   ├── Final_Project_Report.pdf               # 10-page master IEEE conference report
+│   ├── Phase2_Presentation.pptx               # Final Phase 2 PowerPoint presentation
+│   ├── main.tex                               # Master LaTeX source
+│   ├── references.bib                         # Pruned bibliography (XGBoost & ResNet)
+│   ├── IEEEtran.cls                           # IEEE document class
+│   └── figures/                               # 22 publication figures for main.tex
+│
+├── Final_Visualizations/                      # Centralized presentation & visual assets
 │   ├── EDA/                                   # 13 exploratory analysis figures
-│   ├── Phase_1/                               # 6 Phase 1 model evaluation figures
-│   ├── Phase_2/                               # 5 Phase 2 neural network & ablation figures
+│   ├── Phase_1/                               # 3 Phase 1 model evaluation figures
+│   ├── Phase_2/                               # 4 Phase 2 neural network & ablation figures
 │   ├── Model_Comparison/                      # 3 unified 6-model comparison plots
 │   ├── Explainability/                        # 3 Integrated Gradients attribution figures
 │   ├── Error_Analysis/                        # 5 residual diagnostic plots
-│   ├── Hybrid_Model/                          # 6 hybrid mechanics and error correlation plots
+│   ├── Hybrid_Model/                          # 6 hybrid mechanics & error correlation plots
 │   └── README.md                              # Comprehensive visual catalog
 │
-├── Phase_1_Machine_Learning/                  # Submitted Phase 1 Machine Learning pipeline
+├── Phase_1_Machine_Learning/                  # Phase 1 Machine Learning pipeline
 │   ├── notebooks/                             # 6 standardized notebooks (EDA to evaluation)
-│   ├── data/                                  # Cleaned datasets, Parquet shards, metadata
+│   ├── data/                                  # Cleaned datasets, Parquet partitions, outputs
+│   ├── docs/                                  # EDA report, preprocessing specs, setup guide
+│   ├── Final/                                 # Phase 1 PDF report, presentation, and docx
+│   ├── graphs/                                # 19 presentation charts
+│   ├── reports/                               # Phase 1 IEEE report source and PDF
 │   ├── src/                                   # Core Phase 1 utility modules
-│   ├── tests/                                 # 12 automated unit tests (100% passing)
-│   └── reports/                               # Phase 1 IEEE report, presentation, and guides
+│   └── tests/                                 # 12 automated unit tests (100% passing)
 │
 ├── Phase_2_Deep_Learning/                     # Phase 2 Deep Learning pipeline
 │   ├── notebooks/                             # 6 standardized notebooks (Tasks 1–6)
-│   ├── models/                                # Serialized checkpoints (MLP, ResidualMLP, Hybrid)
+│   ├── models/                                # Checkpoints (MLP, ResidualMLP, Hybrid)
 │   ├── artifacts/                             # Scalers, encoders, predictions, config JSONs
-│   ├── src/                                   # Modular Python components (dl_models, hybrid, etc.)
-│   ├── scripts/                               # Background runners for benchmarks and ablations
-│   ├── tests/                                 # 104 automated unit tests (100% passing)
-│   └── reports/                               # Technical reports and Task 6 output data
+│   ├── configs/                               # Training history and feature configs
+│   ├── reports/                               # Phase 2 IEEE report, Task 5/6 technical reports
+│   ├── scripts/                               # Evaluation, ablation, and benchmark runners
+│   ├── src/                                   # PyTorch modules (dl_models, hybrid, etc.)
+│   └── tests/                                 # 104 automated unit tests (100% passing)
 │
-├── README.md                                  # Root project documentation
-├── PROJECT_VIVA_GUIDE.md                      # Comprehensive academic viva defense handbook
-├── FINAL_PROJECT_VERIFICATION.md              # Final submission verification report
-└── requirements.txt                           # Project dependencies
+├── data/                                      # Shared data collection sources & metadata
+├── requirements.txt                           # Project Python dependencies
+├── LICENSE                                    # MIT License
+└── README.md                                  # Repository documentation
 ```
 
 ---
 
-## 9. Environment Setup & Notebook Execution
+## Environment Setup & Execution
 
-### Environment Setup
+### 1. Environment Installation
 ```bash
-# 1. Clone repository
+# Clone the repository
 git clone https://github.com/MAYANKSHARMA01010/Semester_5_AML_DL.git
 cd Semester_5_AML_DL
 
-# 2. Create and activate virtual environment
+# Create and activate Python virtual environment
 python3 -m venv .venv
-source .venv/bin/activate
+source .venv/bin/activate  # macOS/Linux
+# or .venv\Scripts\activate on Windows
 
-# 3. Install dependencies
+# Install project dependencies
 pip install -r requirements.txt
 ```
 
-### Running Test Suites
+### 2. Running Automated Test Suites
+The project includes a 116-test automated verification suite covering data pipelines, aquatic chemistry bounds, zero-leakage partitions, model architectures, checkpoint persistence, and explainability:
+
 ```bash
-# Run complete test suite (116 passing tests)
-pytest Phase_1_Machine_Learning/tests/ -v
-pytest Phase_2_Deep_Learning/tests/ -v
+# Run Phase 1 test suite (12 tests)
+PYTHONPATH="Phase_1_Machine_Learning" pytest Phase_1_Machine_Learning/tests/ -v
+
+# Run Phase 2 test suite (104 tests)
+PYTHONPATH="Phase_2_Deep_Learning" pytest Phase_2_Deep_Learning/tests/ -v
 ```
 
-### Notebook Execution Sequence
-All notebooks follow the strict formatting standard: **zero comments in code cells** and **single-line Markdown headings only**.
+### 3. Notebook Execution Flow
+All 12 notebooks follow the project standard: **zero comments in code cells** and **single-line Markdown section headings**:
 
-1. `Phase_1_Machine_Learning/notebooks/01.EDA/01_data_understanding.ipynb`: Initial schema and distributions.
-2. `Phase_1_Machine_Learning/notebooks/01.EDA/02_data_patterns_and_target.ipynb`: Target behavior and correlations.
-3. `Phase_1_Machine_Learning/notebooks/02.Preprocessing&FeatureSelection/01_data_preprocessing.ipynb`: Data cleaning and feature engineering.
-4. `Phase_1_Machine_Learning/notebooks/03.ModelTraining/01_baseline_and_tree_models.ipynb`: RF and XGBoost baseline training.
-5. `Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/01_ml_model_comparison.ipynb`: Tree baseline comparisons.
-6. `Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/02_feature_importance.ipynb`: Gini feature importances.
-7. `Phase_2_Deep_Learning/notebooks/01_dl_data_pipeline.ipynb`: PyTorch Dataset, DataLoader, scaling, and OHE.
-8. `Phase_2_Deep_Learning/notebooks/02_mlp_architecture.ipynb`: MLP layer topology and parameter analysis.
-9. `Phase_2_Deep_Learning/notebooks/03_mlp_training.ipynb`: PyTorch training loop and regularization diagnostics.
-10. `Phase_2_Deep_Learning/notebooks/04_hybrid_model.ipynb`: OOF residual generation and ResidualMLPNet integration.
-11. `Phase_2_Deep_Learning/notebooks/05_model_evaluation.ipynb`: 6-model benchmarking and 7-group ablation studies.
-12. `Phase_2_Deep_Learning/notebooks/06_explainability_error_analysis.ipynb`: Integrated Gradients and prediction error analysis.
+| # | Notebook Path | Primary Focus |
+| :---: | :--- | :--- |
+| **1** | [`Phase_1_Machine_Learning/notebooks/01.EDA/01_data_understanding.ipynb`](Phase_1_Machine_Learning/notebooks/01.EDA/01_data_understanding.ipynb) | Dataset schema, 5-country telemetry distribution |
+| **2** | [`Phase_1_Machine_Learning/notebooks/01.EDA/02_data_patterns_and_target.ipynb`](Phase_1_Machine_Learning/notebooks/01.EDA/02_data_patterns_and_target.ipynb) | Aquatic chemistry correlation and CCME WQI target behavior |
+| **3** | [`Phase_1_Machine_Learning/notebooks/02.Preprocessing&FeatureSelection/01_data_preprocessing.ipynb`](Phase_1_Machine_Learning/notebooks/02.Preprocessing&FeatureSelection/01_data_preprocessing.ipynb) | Physical plausibility filtering and 38-feature engineering |
+| **4** | [`Phase_1_Machine_Learning/notebooks/03.ModelTraining/01_baseline_and_tree_models.ipynb`](Phase_1_Machine_Learning/notebooks/03.ModelTraining/01_baseline_and_tree_models.ipynb) | Baseline, Random Forest, and XGBoost training |
+| **5** | [`Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/01_ml_model_comparison.ipynb`](Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/01_ml_model_comparison.ipynb) | Tree model comparison on test partition |
+| **6** | [`Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/02_feature_importance.ipynb`](Phase_1_Machine_Learning/notebooks/04.ModelEvaluation/02_feature_importance.ipynb) | Gini split importance and TreeSHAP attribution |
+| **7** | [`Phase_2_Deep_Learning/notebooks/01_dl_data_pipeline.ipynb`](Phase_2_Deep_Learning/notebooks/01_dl_data_pipeline.ipynb) | PyTorch Dataset, DataLoader, 53-feature representation |
+| **8** | [`Phase_2_Deep_Learning/notebooks/02_mlp_architecture.ipynb`](Phase_2_Deep_Learning/notebooks/02_mlp_architecture.ipynb) | `WaterQualityMLP` architecture design and parameter profiling |
+| **9** | [`Phase_2_Deep_Learning/notebooks/03_mlp_training.ipynb`](Phase_2_Deep_Learning/notebooks/03_mlp_training.ipynb) | Training loops, AdamW, loss functions, learning rate schedules |
+| **10** | [`Phase_2_Deep_Learning/notebooks/04_hybrid_model.ipynb`](Phase_2_Deep_Learning/notebooks/04_hybrid_model.ipynb) | 5-fold OOF residual collection and `ResidualMLPNet` training |
+| **11** | [`Phase_2_Deep_Learning/notebooks/05_model_evaluation.ipynb`](Phase_2_Deep_Learning/notebooks/05_model_evaluation.ipynb) | 6-model held-out comparison and 7-group ablation studies |
+| **12** | [`Phase_2_Deep_Learning/notebooks/06_explainability_error_analysis.ipynb`](Phase_2_Deep_Learning/notebooks/06_explainability_error_analysis.ipynb) | Integrated Gradients path attributions and residual diagnostics |
 
 ---
 
-## 10. Important Scientific Limitations
+## Scientific Limitations & Methodological Notes
 
-1. **Deterministic Target Construction:** The CCME WQI is calculated through a deterministic mathematical formula based on threshold exceedances. Consequently, machine learning models achieve high coefficients of determination ($R^2 > 0.99$), reflecting function approximation rather than purely noisy observational prediction.
-2. **Feature Leakage Consideration:** The feature `exceedance_counter` directly counts threshold violations, mirroring the $F_1$ parameter of CCME. While environmentally informative, ablation studies prove that even when `exceedance_counter` is completely removed, tree models retain $R^2 > 0.999$, driven primarily by raw physical parameters (`base_sensors`).
-3. **Tabular Deep Learning Gaps:** Tabular continuous datasets with step-function regulatory boundaries favor axis-aligned decision trees over smooth neural network gradient descent. The standalone MLP ($\text{MAE} = 1.3800$) is less effective than Random Forest ($\text{MAE} = 0.0514$) on median deviations, but provides essential non-linear error correction when integrated into the Residual Hybrid.
+1. **Deterministic Function Approximation:** The CCME WQI is calculated through a deterministic mathematical formula based on threshold exceedances. Consequently, machine learning models achieve high coefficients of determination ($R^2 > 0.99$), reflecting continuous function approximation rather than purely stochastic observational forecasting.
+2. **Feature Leakage Considerations:** The engineered feature `exceedance_counter` tracks cumulative regulatory threshold violations, mirroring the $F_1$ factor of the CCME formula. Systematic ablation experiments demonstrate that even when `exceedance_counter` is completely omitted, tree models retain $R^2 > 0.999$, driven by raw physical parameters (`base_sensors`).
+3. **Tabular Deep Learning Discrepancy:** Continuous datasets characterized by axis-aligned, step-function threshold boundaries favor decision tree partitioning over smooth neural network gradient descent. While the standalone MLP ($\text{MAE} = 1.3800$) underperforms Random Forest ($\text{MAE} = 0.0514$) on central median deviations, its integration into the Residual Hybrid architecture provides crucial non-linear error compensation, cutting peak outlier errors by $54.9\%$.
+4. **Geographic Distribution:** England represents $83.74\%$ of total observations, reflecting the extensive UK Environment Agency open-data monitoring network. Regional subgroup evaluations confirm high model stability across all 5 monitoring jurisdictions.
+
+---
+
+## License
+
+This project is released under the [MIT License](LICENSE).

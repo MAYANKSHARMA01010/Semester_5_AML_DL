@@ -100,9 +100,9 @@ Water Quality Index, CCME WQI, Deep Neural Networks, Gradient Tree Boosting, Ran
 \section{Introduction}
 \label{sec:intro}
 
-\IEEEPARstart{F}{reshwater} ecosystems represent vital natural assets supporting municipal drinking reserves, agricultural irrigation, industrial production, and aquatic biodiversity. However, global watercourses experience accelerating environmental degradation driven by municipal sewage discharges, chemical fertilizers, industrial effluents, and urban stormwater runoff. Comprehensive monitoring of surface water conditions requires tracking a broad spectrum of physical, chemical, and biological determinants, prominently pH, water temperature, dissolved oxygen (DO), biochemical oxygen demand (BOD), electrical conductivity, total nitrogen, and orthophosphate~\cite{tyree2019surface}.
+\IEEEPARstart{F}{reshwater} ecosystems represent vital natural assets supporting municipal drinking reserves, agricultural irrigation, industrial production, and aquatic biodiversity. However, global watercourses experience accelerating environmental degradation driven by municipal sewage discharges, chemical fertilizers, industrial effluents, and urban stormwater runoff. Comprehensive monitoring of surface water conditions requires tracking a broad spectrum of physical, chemical, and biological determinants, prominently pH, water temperature, dissolved oxygen (DO), biochemical oxygen demand (BOD), electrical conductivity, total nitrogen, and orthophosphate.
 
-To translate heterogeneous multi-sensor telemetry into actionable environmental policy, environmental protection agencies rely on standardized composite indices, most notably the Canadian Council of Ministers of the Environment Water Quality Index (\textbf{CCME~WQI})~\cite{ccme2001wqi}. The CCME~WQI mathematically integrates three critical dimensions of water impairment: the proportion of chemical determinants violating safety guidelines (\emph{Scope}), the frequency of individual analytical test failures (\emph{Frequency}), and the magnitude by which observed concentrations exceed regulatory standards (\emph{Amplitude}).
+To translate heterogeneous multi-sensor telemetry into actionable environmental policy, environmental protection agencies rely on standardized composite indices, most notably the Canadian Council of Ministers of the Environment Water Quality Index (\textbf{CCME~WQI}). The CCME~WQI mathematically integrates three critical dimensions of water impairment: the proportion of chemical determinants violating safety guidelines (\emph{Scope}), the frequency of individual analytical test failures (\emph{Frequency}), and the magnitude by which observed concentrations exceed regulatory standards (\emph{Amplitude}).
 
 Despite its institutional standard, operational computation of the CCME~WQI presents substantial operational bottlenecks:
 \begin{enumerate}
@@ -118,7 +118,7 @@ This investigation addresses these complementary strengths by designing, impleme
 The primary contributions of this project are:
 \begin{enumerate}
   \item \textbf{Multi-National Empirical Foundation:} Compilation and thermodynamic physics screening of 2,827,977 raw sensor records across five nations (England, USA, Ireland, China, and Canada), purging 8,360 corrupted telemetry points (0.296\%) to establish a pristine 2,819,617 complete-case corpus.
-  \item \textbf{Domain-Informed Feature Engineering:} Mathematical construction of 38 tabular features capturing aquatic thermodynamic limits (Benson--Krause DO saturation), Redfield stoichiometry, Streeter--Phelps oxygen deficit~\cite{streeter1925study}, and zero-lookahead autoregressive station lags.
+  \item \textbf{Domain-Informed Feature Engineering:} Mathematical construction of 38 tabular features capturing aquatic thermodynamic limits (Benson--Krause DO saturation), Redfield stoichiometry, Streeter--Phelps oxygen deficit, and zero-lookahead autoregressive station lags.
   \item \textbf{Deep Neural Network Formulation:} Development and hyperparameter optimization of a regularized Multi-Layer Perceptron (WaterQualityMLP) utilizing 53-dimensional standardized and one-hot encoded inputs.
   \item \textbf{Residual Hybrid Architecture:} Formulation of a multi-paradigm architecture combining an equal-weighted Base Tree Ensemble ($0.5\times\text{RF} + 0.5\times\text{XGB}$) with a 54-dimensional \texttt{ResidualMLPNet} trained on leakage-free out-of-fold (OOF) residuals, reducing peak outlier error by 54.9\%.
   \item \textbf{Systematic 7-Group Ablation \& Latency Profiling:} Rigorous leave-one-group-out (LOGO) ablation and inference benchmarking identifying the irreplaceable role of raw physical sensors and logarithmic scaling.
@@ -132,19 +132,19 @@ The remainder of this report is organized as follows: Section~\ref{sec:related} 
 \label{sec:related}
 
 \subsection{Environmental Quality Indices}
-Composite environmental indices synthesize complex physico-chemical telemetry into scalar indicators suitable for regulatory policy. The CCME Water Quality Index, established in 2001~\cite{ccme2001wqi}, serves as the benchmark formulation across Canadian provincial jurisdictions and international monitoring catchments. It integrates guideline threshold exceedances across scope, frequency, and amplitude into an index bounded in $[0, 100]$.
+Composite environmental indices synthesize complex physico-chemical telemetry into scalar indicators suitable for regulatory policy. The CCME Water Quality Index, established in 2001, serves as the benchmark formulation across Canadian provincial jurisdictions and international monitoring catchments. It integrates guideline threshold exceedances across scope, frequency, and amplitude into an index bounded in $[0, 100]$.
 
 \subsection{Ensemble Decision Trees for Tabular Data}
 Breiman introduced Random Forests (RF)~\cite{breiman2001random}, demonstrating that bagging independent randomized decision trees drastically suppresses estimation variance without inflating bias. Chen and Guestrin developed XGBoost~\cite{chen2016xgboost}, extending gradient tree boosting through second-order Taylor expansions of regularized objective functions, sparsity-aware split finding, and efficient histogram-based caching. These algorithms have proven exceptionally capable for tabular telemetry due to their invariance to monotonic feature scaling and ability to isolate non-linear interactions.
 
 \subsection{Deep Learning on Structured Environmental Telemetry}
-While Deep Neural Networks (DNNs) have transformed computer vision and natural language processing, their performance on tabular datasets has historically encountered difficulties~\cite{gorishniy2021revisiting}. Decision trees partition feature spaces via axis-aligned orthogonal hyperplanes that mirror regulatory thresholds, whereas multi-layer perceptrons optimize smooth continuous manifolds. Recent advancements in deep tabular modeling emphasize batch normalization, dropout regularization~\cite{srivastava2014dropout}, and residual connections~\cite{he2016deep} to stabilize training landscapes.
+While Deep Neural Networks (DNNs) have transformed computer vision and natural language processing, their performance on tabular datasets has historically encountered difficulties. Decision trees partition feature spaces via axis-aligned orthogonal hyperplanes that mirror regulatory thresholds, whereas multi-layer perceptrons optimize smooth continuous manifolds. Recent advancements in deep tabular modeling emphasize batch normalization, dropout regularization, and residual connections~\cite{he2016deep} to stabilize training landscapes.
 
 \subsection{Residual Learning Principles}
 He et al.~\cite{he2016deep} established the foundational formulation of residual learning: instead of requiring a parameterized function $\mathcal{H}(\mathbf{x})$ to approximate an underlying target directly, the network is tasked with learning a residual mapping $\mathcal{F}(\mathbf{x}) = \mathcal{H}(\mathbf{x}) - \mathbf{x}$. In multi-paradigm systems, this formulation permits a secondary learner to target exclusively the systemic errors produced by a primary baseline model.
 
 \subsection{Axiomatic Model Interpretability}
-Lundberg and Lee unified cooperative game theory and additive feature attributions through SHAP (SHapley Additive exPlanations)~\cite{lundberg2017unified} and TreeSHAP~\cite{lundberg2020from}, providing exact polynomial-time Shapley values for tree ensembles. For deep neural networks, Sundararajan, Taly, and Yan formulated Integrated Gradients~\cite{sundararajan2017axiomatic}, an axiomatic attribution method that satisfies the mathematical requirements of Completeness and Implementation Invariance by integrating gradients along a straight-line interpolation path from a baseline reference.
+Lundberg and Lee unified cooperative game theory and additive feature attributions through SHAP (SHapley Additive exPlanations) and TreeSHAP, providing exact polynomial-time Shapley values for tree ensembles. For deep neural networks, Sundararajan, Taly, and Yan formulated Integrated Gradients~\cite{sundararajan2017axiomatic}, an axiomatic attribution method that satisfies the mathematical requirements of Completeness and Implementation Invariance by integrating gradients along a straight-line interpolation path from a baseline reference.
 
 % ============================================================
 \section{Mathematical Formulations}
@@ -332,7 +332,7 @@ Tree-based models rely on an engineered 38-feature representation spanning seven
   \end{tabular}
 \end{table}
 
-\noindent\textbf{1.\ Benson--Krause Dissolved Oxygen Saturation~\cite{benson1984concentration}:}
+\noindent\textbf{1.\ Benson--Krause Dissolved Oxygen Saturation:}
 Atmospheric oxygen solubility in freshwater depends non-linearly on water temperature $T$ ($^{\circ}\text{C}$):
 \begin{equation}
   \text{DO}_{\text{sat}} = 14.652 - 0.41022\,T + 0.007991\,T^2 - 0.00007777\,T^3
@@ -342,14 +342,14 @@ Atmospheric oxygen solubility in freshwater depends non-linearly on water temper
   \text{DO}_{\text{def}} = \max(0,\, \text{DO}_{\text{sat}} - \text{DO})
 \end{equation}
 
-\noindent\textbf{2.\ Redfield Stoichiometric Ratio~\cite{redfield1934proportions}:}
+\noindent\textbf{2.\ Redfield Stoichiometric Ratio:}
 The atomic balance of nitrogen to phosphorus governs freshwater eutrophication kinetics:
 \begin{equation}
   \text{N:P Ratio} = \frac{\text{Nitrogen (mg/L)}}{\text{Orthophosphate (mg/L)} + 10^{-5}}
 \end{equation}
 
 \noindent\textbf{3.\ Emerson Toxic Un-Ionized Ammonia:}
-Following Emerson et al.~\cite{emerson1975aqueous}, aqueous ammonia shifts between non-toxic ammonium ($\text{NH}_4^+$) and toxic un-ionized ammonia ($\text{NH}_3$) as a function of temperature and pH:
+Following Emerson et al., aqueous ammonia shifts between non-toxic ammonium ($\text{NH}_4^+$) and toxic un-ionized ammonia ($\text{NH}_3$) as a function of temperature and pH:
 \begin{equation}
   f_{\text{toxic}} = \frac{1}{10^{(0.09018 + \frac{2729.92}{T+273.15} - \text{pH})} + 1}
 \end{equation}
@@ -419,12 +419,12 @@ To evaluate neural representation learning on multi-sensor telemetry, we impleme
 \begin{itemize}
   \item \textbf{Input Layer:} 53 dimensions (36 standardized continuous + 17 one-hot categories).
   \item \textbf{Hidden Layers:} Four successive dense blocks: $53 \rightarrow 512 \rightarrow 256 \rightarrow 128 \rightarrow 64 \rightarrow 1$.
-  \item \textbf{Regularization \& Normalization:} Each linear projection is followed by \texttt{BatchNorm1d}~\cite{ioffe2015batch}, ReLU activation, and \texttt{Dropout(p=0.30)}.
-  \item \textbf{Initialization:} Kaiming He normal initialization~\cite{he2015delving} with zero biases.
+  \item \textbf{Regularization \& Normalization:} Each linear projection is followed by \texttt{BatchNorm1d}, ReLU activation, and \texttt{Dropout(p=0.30)}.
+  \item \textbf{Initialization:} Kaiming He normal initialization with zero biases.
 \end{itemize}
 
 \subsection{Training Loop \& Convergence Diagnostics}
-The MLP was optimized using AdamW~\cite{loshchilov2018decoupled} ($\text{lr} = 10^{-3}$, $\text{weight\_decay} = 10^{-4}$) under Mean Squared Error (MSE) loss with batch size 2,048 over 1,973,730 training samples. Fig.~\ref{fig:mlp_training} illustrates the loss and validation MAE curves across training epochs. The model converged rapidly, attaining its lowest validation loss at epoch 2 ($2.6752$) with a validation MAE of $1.2534$.
+The MLP was optimized using AdamW ($\text{lr} = 10^{-3}$, $\text{weight\_decay} = 10^{-4}$) under Mean Squared Error (MSE) loss with batch size 2,048 over 1,973,730 training samples. Fig.~\ref{fig:mlp_training} illustrates the loss and validation MAE curves across training epochs. The model converged rapidly, attaining its lowest validation loss at epoch 2 ($2.6752$) with a validation MAE of $1.2534$.
 
 \begin{figure}[!t]
   \centering

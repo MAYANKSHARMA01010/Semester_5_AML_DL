@@ -246,3 +246,7 @@ DL_AML_Project_Ideas.pdf
 
 # Build output duplicate PDF (canonical report is Final_Project_Report.pdf)
 Final_Report/main.pdf
+
+# Local personal preparation notes
+local_notes/
+
