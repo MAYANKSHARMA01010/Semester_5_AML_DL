@@ -90,7 +90,7 @@
 Automated assessment of freshwater ecosystem health is crucial for environmental
 protection, municipal water safety, and real-time response to acute pollution events.
 Following the completion of Phase~1, which established tree-based baselines
-(Random Forest and XGBoost) on a multinational corpus of 2,819,617 complete-case
+(Random Forest~\cite{breiman2001random} and XGBoost~\cite{chen2016xgboost}) on a multinational corpus of 2,819,617 complete-case
 observations across five nations (England, USA, Ireland, China, Canada; 1940--2023),
 this paper presents the complete investigations, architectures, and empirical findings
 for \textbf{Phase~2 (Deep Learning)}. 
@@ -203,7 +203,7 @@ Phase~1 trained tree-based regressors on 38 tabular features. Random Forest (100
 $\text{max\_depth}=20$) achieved $\text{MAE} = 0.0514$, $\text{RMSE} = 0.2016$, and
 $R^2 = 0.999870$. XGBoost (300 estimators, $\eta = 0.05$, $\text{max\_depth}=8$) achieved
 $\text{MAE} = 0.1614$, $\text{RMSE} = 0.4364$, and $R^2 = 0.999389$ with high throughput
-($4.6\text{ ms}$ latency). TreeSHAP attribution identified orthophosphate as the dominant
+($4.6\text{ ms}$ latency). TreeSHAP attribution~\cite{lundberg2017unified,lundberg2020from} identified orthophosphate as the dominant
 predictive driver ($> 88\%$ split importance).
 
 \subsection{Deep Learning for Tabular Environmental Telemetry}
@@ -351,7 +351,7 @@ incorporating \texttt{BatchNorm1d} and Dropout ($p = 0.20$).
 \subsection{Optimization Configuration}
 Training was executed on the full 1,973,730-record training partition:
 \begin{itemize}
-  \item \textbf{Optimizer:} AdamW with decoupled weight decay ($\text{lr} = 10^{-3}$, $\lambda = 10^{-4}$, $\beta_1 = 0.9$, $\beta_2 = 0.999$).
+  \item \textbf{Optimizer:} AdamW~\cite{loshchilov2018decoupled} with decoupled weight decay ($\text{lr} = 10^{-3}$, $\lambda = 10^{-4}$, $\beta_1 = 0.9$, $\beta_2 = 0.999$).
   \item \textbf{Loss Function:} Mean Squared Error (MSE):
         \begin{equation}
           \mathcal{L}_{\text{MSE}} = \frac{1}{N}\sum_{i=1}^N \left(y_i - \hat{y}_i\right)^2
@@ -670,7 +670,7 @@ Table~\ref{tab:ablation} reports the empirical degradation metrics across all 7 
         $\Delta R^2 = -0.8511$). Because nutrient telemetry exhibits extreme skewness ($\gamma_1 > 40$),
         the $\log(1+x)$ transformation is an indispensable requirement for gradient descent stability.
   \item \textbf{Stoichiometric Synergy in Gradient Boosting:} XGBoost effectively leverages
-        Benson-Krause DO deficit and Redfield N:P ratios, showing a $+1.15$ MAE degradation
+        Benson-Krause DO deficit~\cite{benson1984concentration} and Redfield N:P ratio~\cite{redfield1934proportions}s, showing a $+1.15$ MAE degradation
         when stoichiometric features are ablated.
 \end{enumerate}
 
