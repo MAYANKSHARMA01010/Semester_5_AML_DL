@@ -8,28 +8,29 @@
 
 ---
 
-## 1. Commit Sequence Summary (6 Granular Commits)
+## 1. Commit Sequence Summary (7 Granular Commits)
 
-This repository update reorganizes the Phase 1, Phase 2, and Final reports into a standardized academic state with verified references, clean compilation, and zero redundant intermediate files.
+This repository update reorganizes the Phase 1, Phase 2, and Final reports into a standardized academic state with verified references, clean compilation, and zero redundant duplicate or intermediate files.
 
 | Commit # | Scope / Focus | Primary Files Affected | Summary of Changes |
 | :---: | :--- | :--- | :--- |
 | **Commit 1** | **Bibliography Synchronization** | `Final_Report/references.bib`<br>`Phase_1_Machine_Learning/reports/references.bib`<br>`Phase_2_Deep_Learning/reports/references_p2.bib` | Added 18 complete peer-reviewed citations with active DOIs and URLs. |
 | **Commit 2** | **Phase 1 ML Report Update** | `Phase_1_Machine_Learning/reports/Project_Report_IEEE.tex`<br>`Phase_1_Machine_Learning/reports/Project_Report_IEEE.pdf`<br>`Phase_1_Machine_Learning/Final/Project_Report_LaTeX_IEEE_Final.pdf` | Linked citations for CCME WQI, Random Forest, Streeter-Phelps, TreeSHAP, and Emerson ammonia; recompiled 6-page IEEE PDF. |
-| **Commit 3** | **Phase 2 DL Report LaTeX** | `Phase_2_Deep_Learning/reports/Phase_2_Report.tex`<br>`Phase_2_Deep_Learning/Final/Project_Report_Phase_2_IEEE.tex` | Integrated scholarly citations for Tabular DL, Residual Learning, He Normal init, AdamW, and Integrated Gradients across 1,046 lines of LaTeX. |
-| **Commit 4** | **Phase 2 DL PDF Recompilation** | `Phase_2_Deep_Learning/reports/Phase_2_Report.pdf`<br>`Phase_2_Deep_Learning/Final/Project_Report_Phase_2_IEEE.pdf` | Recompiled 11-page IEEE conference PDF (2.9 MB) with 17 embedded publication figures and 7 tables. |
-| **Commit 5** | **Master Final Project Report** | `Final_Report/main.tex`<br>`Final_Report/main.pdf`<br>`Final_Report/Final_Project_Report.pdf` | Integrated dual-phase citations; recompiled 11-page master research paper (3.9 MB) with 22 figures and 5 tables. |
+| **Commit 3** | **Phase 2 DL Report LaTeX** | `Phase_2_Deep_Learning/reports/Phase_2_Report.tex` | Integrated scholarly citations for Tabular DL, Residual Learning, He Normal init, AdamW, and Integrated Gradients across 1,046 lines of LaTeX. |
+| **Commit 4** | **Phase 2 DL PDF Recompilation** | `Phase_2_Deep_Learning/reports/Phase_2_Report.pdf` | Recompiled 11-page IEEE conference PDF (2.9 MB) with 17 embedded publication figures and 7 tables. |
+| **Commit 5** | **Master Final Project Report** | `Final_Report/main.tex`<br>`Final_Report/Final_Project_Report.pdf` | Integrated dual-phase citations; recompiled 11-page master research paper (3.9 MB) with 22 figures and 5 tables. |
 | **Commit 6** | **Audit Handover & Commit Log** | `Final_Report/REPORT_VERIFICATION.md`<br>`COMMITS_OVERVIEW.md` | Purged all temporary/junk files (`__pycache__`, `.pytest_cache`, `.DS_Store`, `test_bib.bib`); finalized audit documentation. |
+| **Commit 7** | **Deduplication & Cleanliness Audit** | `Phase_2_Deep_Learning/Final/` (removed)<br>`Final_Report/main.pdf` (removed)<br>`Final_Visualizations/` duplicates (removed)<br>`Final_Visualizations/README.md`<br>`.gitignore` | Pruned ~7.7 MB of exact duplicate files across reports and visualization catalogs; established strict canonical delivery paths with zero file repetition. |
 
 ---
 
-## 2. Inventory of Primary Deliverable Reports
+## 2. Inventory of Primary Deliverable Reports (Canonical Paths)
 
 | Report Designation | Master LaTeX Source | Publication-Grade PDF | Scope & Page Count |
 | :--- | :--- | :--- | :--- |
 | **Unified Master Report** | `Final_Report/main.tex` | `Final_Report/Final_Project_Report.pdf` | 11 Pages, 22 Figures, 5 Tables (Phases 1 + 2) |
 | **Phase 2 Deep Learning Report** | `Phase_2_Deep_Learning/reports/Phase_2_Report.tex` | `Phase_2_Deep_Learning/reports/Phase_2_Report.pdf` | 11 Pages, 17 Figures, 7 Tables (Phase 2 Only) |
-| **Phase 1 Machine Learning Report** | `Phase_1_Machine_Learning/reports/Project_Report_IEEE.tex` | `Phase_1_Machine_Learning/Final/Project_Report_LaTeX_IEEE_Final.pdf` | 6 Pages, 8 Figures, 5 Tables (Phase 1 Only) |
+| **Phase 1 Machine Learning Report** | `Phase_1_Machine_Learning/reports/Project_Report_IEEE.tex` | `Phase_1_Machine_Learning/reports/Project_Report_IEEE.pdf` | 6 Pages, 8 Figures, 5 Tables (Phase 1 Only) |
 
 ---
 

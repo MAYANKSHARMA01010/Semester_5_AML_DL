@@ -12,13 +12,13 @@ All figures are organized into categorized subdirectories to facilitate report g
 | Subfolder | Image Count | Primary Focus | Originating Tasks |
 | :--- | :---: | :--- | :--- |
 | [`EDA/`](EDA/) | 13 | Exploratory Data Analysis, chemistry distributions, correlations | Phase 1 Task 1 & 2 |
-| [`Phase_1/`](Phase_1/) | 6 | Baseline, Random Forest, XGBoost, and TreeSHAP evaluations | Phase 1 Task 3 & 4 |
-| [`Phase_2/`](Phase_2/) | 5 | MLP training convergence, 6-model comparison, feature ablation, latency | Phase 2 Task 3 & 5 |
+| [`Phase_1/`](Phase_1/) | 3 | Baseline, Random Forest, XGBoost, and TreeSHAP evaluations | Phase 1 Task 3 & 4 |
+| [`Phase_2/`](Phase_2/) | 4 | MLP training convergence, regularization curves, feature ablation, latency | Phase 2 Task 3 & 5 |
 | [`Model_Comparison/`](Model_Comparison/) | 3 | Unified 6-model benchmarks, actual vs predicted, error CDF curves | Phase 2 Task 5 & 6 |
 | [`Explainability/`](Explainability/) | 3 | Integrated Gradients global/signed attributions, waterfall local cases | Phase 2 Task 6 |
 | [`Error_Analysis/`](Error_Analysis/) | 5 | Residual distributions, heteroskedasticity, tier and habitat errors | Phase 2 Task 6 |
 | [`Hybrid_Model/`](Hybrid_Model/) | 6 | Residual hybrid mechanics, error correlation, component decomposition | Phase 2 Task 4, 5, 6 |
-| **Total** | **41** | **Comprehensive Visual Evidence** | |
+| **Total** | **37** | **Comprehensive Visual Evidence** | |
 
 ---
 
@@ -47,15 +47,11 @@ Visualizations supporting Phase 1 tree baseline evaluations:
 - `14_MODEL_comparison_mae_rmse_r2.png`: Phase 1 validation benchmark comparing Mean Baseline, Random Forest, and XGBoost.
 - `15_MODEL_feature_importance_rf_xgb.png`: Comparative Gini feature importance between Random Forest and XGBoost.
 - `16_MODEL_shap_summary_beeswarm.png`: TreeSHAP summary beeswarm plot demonstrating global feature impact on CCME index.
-- `feature_importance.png`: Standalone high-resolution Gini feature importance bar chart.
-- `model_comparison.png`: Comparative evaluation bar plot across MAE, RMSE, and $R^2$.
-- `shap_summary.png`: Standalone TreeSHAP global attribution summary.
 
 ### 3. Phase 2 Deep Learning Components (`Phase_2/`)
 Visualizations from neural network development and comprehensive benchmarking:
 
 - `03_training_convergence_curves.png`: Training vs validation loss/MAE curves over epochs for WaterQualityMLP.
-- `05_model_performance_comparison.png`: Comprehensive test set benchmark across all 6 predictive paradigms.
 - `06_feature_group_ablation_impact.png`: Leave-one-group-out (LOGO) ablation impact ($\Delta\text{MAE}$, $\Delta R^2$) across 7 domain feature groups.
 - `07_regularization_dropout_curves.png`: Dropout rate sweep ($p \in [0.0, 0.5]$) showing generalization error response.
 - `10_computational_tradeoffs.png`: Latency vs accuracy trade-off scatter plot across single-sample and batch regimes.
